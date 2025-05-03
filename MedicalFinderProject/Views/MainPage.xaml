@@ -1,62 +1,67 @@
 ﻿<Page x:Class="MedicalFinderProject.Views.MainPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="#F2F4F8">
+      Background="#F2F4F8" Height="703" Width="1059">
 
-    <Grid>
+    <Grid Background="#F2F4F8" Margin="0,57,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="13*"/>
+            <ColumnDefinition Width="1007*"/>
+        </Grid.ColumnDefinitions>
         <Border CornerRadius="20" Background="White" Padding="30" Width="1000" 
-                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
+            HorizontalAlignment="Center" Margin="0,10,0,24" Grid.Column="1">
             <StackPanel>
 
                 <!-- Заголовок -->
-                <TextBlock Text="Список врачей" FontSize="24" FontWeight="Bold" 
-                           Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,0,0,15" />
 
-                <!-- Фильтры -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
-                    <ComboBox x:Name="ClinicFilter" Width="150" Margin="5" 
-                              Style="{StaticResource RoundedComboBox}" 
-                              SelectionChanged="FilterChanged">
-                        <ComboBoxItem Content="Все клиники"/>
-                        <!-- Заполните данными из базы -->
-                    </ComboBox>
+                <!-- Заголовок -->
+                <TextBlock Text="Выберите город и специализацию" FontSize="24" FontWeight="Bold" 
+                       Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,0,0,15" />
 
-                    <ComboBox x:Name="SpecializationFilter" Width="150" Margin="5" 
-                              Style="{StaticResource RoundedComboBox}" 
-                              SelectionChanged="FilterChanged">
-                        <ComboBoxItem Content="Все специализации"/>
-                        <!-- Заполните данными из базы -->
-                    </ComboBox>
+                <!-- Выбор города -->
+                <ComboBox x:Name="CityComboBox" IsEditable="True" Width="400" Margin="0,10" KeyUp="CityComboBox_KeyUp"
+                      Style="{StaticResource RoundedComboBox}" Height="47" />
 
-                    <ComboBox x:Name="ExperienceFilter" Width="150" Margin="5" 
-                              Style="{StaticResource RoundedComboBox}" 
-                              SelectionChanged="FilterChanged">
-                        <ComboBoxItem Content="Опыт"/>
-                        <!-- Заполните данными из базы -->
-                    </ComboBox>
+                <!-- Выбор специализации -->
+                <ComboBox x:Name="SpecializationComboBox" IsEditable="True" Width="400" Margin="0,10" KeyUp="SpecializationComboBox_KeyUp"
+                      Style="{StaticResource RoundedComboBox}" Height="47" />
+                
+                <Button x:Name="FindSpecialistButton"
+                        Style="{StaticResource PrimaryButton}"
+            Content="Найти специалиста"
+            Click="FindSpecialistButton_Click"
+            Margin="0,0,10,5"
+            Width="160" Height="30"/>
+                <Button x:Name="ShowAllButton"
+                        Style="{StaticResource PrimaryButton}"
+            Content="Показать всех"
+            Click="ShowAllButton_Click"
+            Width="160" Height="30"
+            Margin="0,0,10,5"
+            Visibility="Visible"/>
+                <!-- Кнопка поиска -->
 
-                    <ComboBox x:Name="RatingFilter" Width="150" Margin="5" 
-                              Style="{StaticResource RoundedComboBox}" 
-                              SelectionChanged="FilterChanged">
-                        <ComboBoxItem Content="Оценка"/>
-                        <!-- Заполните данными из базы -->
-                    </ComboBox>
-                </StackPanel>
+                <!-- Сообщение об отсутствии специалистов -->
+                <TextBlock x:Name="NoDoctorsFoundMessage" Text="По заданным параметрам специалистов не найдено" 
+               Foreground="Red" HorizontalAlignment="Center" Visibility="Collapsed" Margin="10" />
 
-                <!-- Список врачей -->
-                <ListView x:Name="DoctorsList" BorderBrush="#D1D5DB" BorderThickness="1" 
-                          Height="400" Width="950" HorizontalAlignment="Center">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FullName}" Width="250"/>
-                            <GridViewColumn Header="Клиника" DisplayMemberBinding="{Binding ClinicName}" Width="200"/>
-                            <GridViewColumn Header="Специализация" DisplayMemberBinding="{Binding Specialization}" Width="200"/>
-                            <GridViewColumn Header="Опыт" DisplayMemberBinding="{Binding Experience}" Width="100"/>
-                            <GridViewColumn Header="Оценка" DisplayMemberBinding="{Binding Rating}" Width="100"/>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
+                <!-- Кнопка для отображения всех специалистов -->
             </StackPanel>
+
         </Border>
+        <ListView x:Name="DoctorsList" BorderBrush="#D1D5DB" BorderThickness="1" Width="950" HorizontalAlignment="Left" Margin="41,312,0,0" Grid.Column="1" MouseDoubleClick="DoctorsList_MouseDoubleClick">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Имя" DisplayMemberBinding="{Binding FullName}" Width="250"/>
+                    <GridViewColumn Header="Клиника" DisplayMemberBinding="{Binding ClinicName}" Width="200"/>
+                    <GridViewColumn Header="Специализация" DisplayMemberBinding="{Binding Specialization}" Width="200"/>
+                    <GridViewColumn Header="Опыт" DisplayMemberBinding="{Binding Experience}" Width="100"/>
+                    <GridViewColumn Header="Оценка" DisplayMemberBinding="{Binding Rating}" Width="100"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
+
+
 </Page>

@@ -22,6 +22,7 @@ namespace MedicalFinderProject.dbModel
             this.Favorites = new HashSet<Favorites>();
             this.MedicalRecords = new HashSet<MedicalRecords>();
             this.Reviews = new HashSet<Reviews>();
+            this.Services = new HashSet<Services>();
         }
     
         public int DoctorID { get; set; }
@@ -45,5 +46,7 @@ namespace MedicalFinderProject.dbModel
         public virtual ICollection<MedicalRecords> MedicalRecords { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reviews> Reviews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Services> Services { get; set; }
     }
 }

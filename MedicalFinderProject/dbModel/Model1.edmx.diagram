@@ -37,6 +37,8 @@
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Messages__Sender__6754599E" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Notificat__UserI__71D1E811" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Users__RoleID__3B75D760" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Services" Width="1.5" PointX="5.25" PointY="30" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK_Services_Doctor" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

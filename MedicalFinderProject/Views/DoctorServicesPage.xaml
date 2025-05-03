@@ -1,0 +1,66 @@
+﻿<Page x:Class="MedicalFinderProject.Views.DoctorServicesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Услуги врача">
+
+    <Grid Background="White">
+        <TextBlock Text="Услуги врача" FontSize="24" FontWeight="Bold" 
+               Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,10,0,14"/>
+
+        <ListView x:Name="ServicesList" Width="900" Margin="40,70,0,60" HorizontalAlignment="Left"
+              ItemsSource="{Binding Services}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Название" Width="250">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Name}" FontSize="16"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Описание" Width="350">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Description}" FontSize="14" Foreground="Gray" TextWrapping="Wrap"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header="Цена" Width="100">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Price, StringFormat={}{0} ₽}" FontSize="16" HorizontalAlignment="Right"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <GridViewColumn Header=" " Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Добавить в корзину"
+                                    Width="130" Height="30"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                    CommandParameter="{Binding}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <TextBlock x:Name="NoServicesText" Text="Услуги для данного врача не найдены."
+               Visibility="Collapsed"
+               Foreground="Gray" FontStyle="Italic" FontSize="16"
+               Margin="40,80,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+
+        <Button Content="Перейти в корзину"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Width="200"
+            Margin="0,0,0,20"
+            Click="GoToCartButton_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="40,10,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+    </Grid>
+</Page>

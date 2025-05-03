@@ -40,5 +40,6 @@ namespace MedicalFinderProject.dbModel
         public virtual DbSet<Roles> Roles { get; set; }
         public virtual DbSet<Specializations> Specializations { get; set; }
         public virtual DbSet<Users> Users { get; set; }
+        public virtual DbSet<Services> Services { get; set; }
     }
 }

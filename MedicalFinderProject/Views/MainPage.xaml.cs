@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MedicalFinderProject.dbModel;
 
+
 namespace MedicalFinderProject.Views
 {
     /// <summary>
@@ -21,136 +22,136 @@ namespace MedicalFinderProject.Views
     /// </summary>
     public partial class MainPage : Page
     {
-        private List<DoctorViewModel> allDoctors;
+        
+        private List<string> cities = new List<string>();
+        private List<string> specializations = new List<string>();
 
         public MainPage()
         {
             InitializeComponent();
-            LoadFilters();
-            LoadDoctors();  // Убедитесь, что данные загружаются
+            LoadCities();
+            LoadSpecializations();
         }
 
-        private void FilterChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ApplyFilters();
-        }
-
-        private void LoadFilters()
+        // Загрузка городов
+        private void LoadCities()
         {
             using (var context = new MedicalSpecialistServiceEntities3())
             {
-                var clinics = context.Clinics.Select(c => c.Name).Distinct().ToList();
-                foreach (var clinic in clinics)
-                    ClinicFilter.Items.Add(clinic);
-
-                var specializations = context.Specializations.Select(s => s.Name).Distinct().ToList();
-                foreach (var spec in specializations)
-                    SpecializationFilter.Items.Add(spec);
-
-                ExperienceFilter.Items.Add("0-3 года");
-                ExperienceFilter.Items.Add("4-7 лет");
-                ExperienceFilter.Items.Add("8+ лет");
-
-                RatingFilter.Items.Add("1+");
-                RatingFilter.Items.Add("2+");
-                RatingFilter.Items.Add("3+");
-                RatingFilter.Items.Add("4+");
-                RatingFilter.Items.Add("5");
+                cities = context.Clinics.Select(c => c.City).Distinct().ToList();
+                CityComboBox.ItemsSource = cities;
             }
-
-            ClinicFilter.SelectedIndex = 0;
-            SpecializationFilter.SelectedIndex = 0;
-            ExperienceFilter.SelectedIndex = 0;
-            RatingFilter.SelectedIndex = 0;
         }
 
-        private void LoadDoctors()
+        // Загрузка специализаций
+        private void LoadSpecializations()
         {
-            try
+            using (var context = new MedicalSpecialistServiceEntities3())
             {
-                using (var context = new MedicalSpecialistServiceEntities3())
+                specializations = context.Specializations.Select(s => s.Name).Distinct().ToList();
+                SpecializationComboBox.ItemsSource = specializations;
+            }
+        }
+
+        // Обработчик для поиска по городу
+        private void CityComboBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            string query = CityComboBox.Text.ToLower();
+            var filteredCities = cities.Where(c => c.ToLower().Contains(query)).ToList();
+            CityComboBox.ItemsSource = filteredCities;
+            CityComboBox.IsDropDownOpen = true; // Открываем выпадающий список
+        }
+
+        // Обработчик для поиска по специализации
+        private void SpecializationComboBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            string query = SpecializationComboBox.Text.ToLower();
+            var filteredSpecializations = specializations.Where(s => s.ToLower().Contains(query)).ToList();
+            SpecializationComboBox.ItemsSource = filteredSpecializations;
+            SpecializationComboBox.IsDropDownOpen = true; // Открываем выпадающий список
+        }
+
+        // Обработчик для кнопки "Найти специалиста"
+        private void FindSpecialistButton_Click(object sender, RoutedEventArgs e)
+        {
+            string selectedCity = CityComboBox.Text;
+            string selectedSpecialization = SpecializationComboBox.Text;
+
+            // Применение фильтров
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var filteredDoctors = (from d in context.Doctors
+                                       join c in context.Clinics on d.ClinicID equals c.ClinicID
+                                       join s in context.Specializations on d.SpecializationID equals s.SpecializationID
+                                       where c.City == selectedCity && s.Name == selectedSpecialization
+                                       select new DoctorViewModel
+                                       {
+                                           DoctorID = d.DoctorID,
+                                           FullName = d.LastName + " " + d.FirstName + " " + d.MiddleName,
+                                           ClinicName = c.Name,
+                                           Specialization = s.Name,
+                                           Experience = d.ExperienceYears + " лет",
+                                           Rating = Math.Round(
+                                               context.Reviews.Where(r => r.DoctorID == d.DoctorID).Any()
+                                               ? context.Reviews.Where(r => r.DoctorID == d.DoctorID).Average(r => (double?)r.Rating) ?? 0
+                                               : 0,
+                                               1)
+                                       }).ToList();
+
+                if (filteredDoctors.Count == 0)
                 {
-                    allDoctors = (from d in context.Doctors
+                    NoDoctorsFoundMessage.Visibility = Visibility.Visible; // Показываем сообщение об отсутствии врачей
+                    DoctorsList.Visibility = Visibility.Collapsed; // Скрываем список
+                    ShowAllButton.Visibility = Visibility.Visible; // Показываем кнопку "Показать всех"
+                }
+                else
+                {
+                    NoDoctorsFoundMessage.Visibility = Visibility.Collapsed; // Скрываем сообщение
+                    DoctorsList.Visibility = Visibility.Visible; // Показываем список
+                    DoctorsList.ItemsSource = filteredDoctors; // Отображаем отфильтрованных врачей
+                }
+
+                // Обновление списка врачей
+                DoctorsList.ItemsSource = filteredDoctors;
+            }
+
+        }
+        private void ShowAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Сбрасываем фильтры и показываем всех врачей
+            NoDoctorsFoundMessage.Visibility = Visibility.Collapsed;
+            DoctorsList.Visibility = Visibility.Visible;
+            ShowAllButton.Visibility = Visibility.Collapsed;
+
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var allDoctors = (from d in context.Doctors
                                   join c in context.Clinics on d.ClinicID equals c.ClinicID
                                   join s in context.Specializations on d.SpecializationID equals s.SpecializationID
                                   select new DoctorViewModel
                                   {
+                                      DoctorID = d.DoctorID,
                                       FullName = d.LastName + " " + d.FirstName + " " + d.MiddleName,
                                       ClinicName = c.Name,
                                       Specialization = s.Name,
                                       Experience = d.ExperienceYears + " лет",
                                       Rating = Math.Round(
-                                        context.Reviews.Where(r => r.DoctorID == d.DoctorID).Any()
-                                            ? context.Reviews.Where(r => r.DoctorID == d.DoctorID).Average(r => (double?)r.Rating) ?? 0
-                                            : 0, 1)
-                                  }).OrderBy(d => d.FullName).ToList();
+                                          context.Reviews.Where(r => r.DoctorID == d.DoctorID).Any()
+                                          ? context.Reviews.Where(r => r.DoctorID == d.DoctorID).Average(r => (double?)r.Rating) ?? 0
+                                          : 0,
+                                          1)
+                                  }).ToList();
 
-                    DoctorsList.ItemsSource = allDoctors;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка при загрузке врачей: " + ex.Message);
+                DoctorsList.ItemsSource = allDoctors;
             }
         }
-
-        private void ApplyFilters()
+        private void DoctorsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (allDoctors == null)
+            if (DoctorsList.SelectedItem is DoctorViewModel selectedDoctor)
             {
-                return; // Если allDoctors еще не инициализирован, не применяем фильтры.
-            }
-
-            var filtered = allDoctors.AsEnumerable();
-
-            if (ClinicFilter.SelectedIndex > 0)
-                filtered = filtered.Where(d => d.ClinicName == ClinicFilter.SelectedItem.ToString());
-
-            if (SpecializationFilter.SelectedIndex > 0)
-                filtered = filtered.Where(d => d.Specialization == SpecializationFilter.SelectedItem.ToString());
-
-            if (ExperienceFilter.SelectedIndex > 0)
-            {
-                string exp = ExperienceFilter.SelectedItem.ToString();
-                filtered = filtered.Where(d =>
-                {
-                    int years = int.Parse(d.Experience.Split(' ')[0]);
-                    return MatchExperience(exp, years);
-                });
-            }
-
-            if (RatingFilter.SelectedIndex > 0)
-            {
-                double minRating = double.Parse(RatingFilter.SelectedItem.ToString().Replace("+", ""));
-                filtered = filtered.Where(d => d.Rating >= minRating);
-            }
-
-            DoctorsList.ItemsSource = filtered.ToList();
-        }
-
-        private bool MatchExperience(string exp, int years)
-        {
-            switch (exp)
-            {
-                case "0-3 года":
-                    return years <= 3;
-                case "4-7 лет":
-                    return years >= 4 && years <= 7;
-                case "8+ лет":
-                    return years >= 8;
-                default:
-                    return true;
+                NavigationService?.Navigate(new DoctorServicesPage(selectedDoctor));
             }
         }
-    }
-
-    public class DoctorViewModel
-    {
-        public string FullName { get; set; }
-        public string ClinicName { get; set; }
-        public string Specialization { get; set; }
-        public string Experience { get; set; }
-        public double Rating { get; set; }
     }
 
 

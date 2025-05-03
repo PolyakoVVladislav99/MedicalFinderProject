@@ -38,10 +38,12 @@ namespace MedicalFinderProject.Views
             string email = EmailBox.Text.Trim().ToLower();
             string password = PasswordBox.Password;
             string phone = PhoneBox.Text.Trim();
-            int selectedRoleId = (int)RoleComboBox.SelectedValue;
+            var selectedRoleId = (int)RoleComboBox.SelectedValue;
+
+
 
             if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) ||
-                string.IsNullOrEmpty(password) || RoleComboBox.SelectedItem == null)
+                string.IsNullOrEmpty(password) || selectedRoleId == 0 || string.IsNullOrEmpty(phone))
             {
                 MessageBox.Show("Пожалуйста, заполните все поля.");
                 return;
