@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f295d9bf904b452c9adaded9fdb2b7df" Name="Diagram1">
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.ActivityLogs" Width="1.5" PointX="5.25" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Appointments" Width="1.5" PointX="8.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Clinics" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Doctors" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.DoctorSchedules" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Documents" Width="1.5" PointX="5.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Favorites" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.MedicalCards" Width="1.5" PointX="5.25" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.MedicalRecords" Width="1.5" PointX="7.5" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Messages" Width="1.5" PointX="5.25" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Notifications" Width="1.5" PointX="5.25" PointY="22.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Reviews" Width="1.5" PointX="5.25" PointY="26.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Roles" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Specializations" Width="1.5" PointX="0.75" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Users" Width="1.5" PointX="3" PointY="9.875" IsExpanded="true" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__ActivityL__UserI__6383C8BA" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Appointme__Docto__5AEE82B9" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Appointme__UserI__5BE2A6F2" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Doctors__ClinicI__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Doctors__Special__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__DoctorSch__Docto__5165187F" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Favorites__Docto__6D0D32F4" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__MedicalRe__Docto__4E88ABD4" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Reviews__DoctorI__5629CD9C" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Documents__UserI__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Favorites__UserI__6C190EBB" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__MedicalCa__UserI__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__MedicalRe__CardI__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Messages__Receiv__68487DD7" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Messages__Sender__6754599E" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Notificat__UserI__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Users__RoleID__3B75D760" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
