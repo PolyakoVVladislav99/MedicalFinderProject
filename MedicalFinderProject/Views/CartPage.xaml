@@ -26,13 +26,7 @@
             <Button Content="К услугам" Width="120" Margin="10,0" Click="BackToServices_Click" Style="{StaticResource PrimaryButton}"/>
             <Button Content="Очистить корзину" Width="150" Margin="10,0" Click="ClearCart_Click" Style="{StaticResource PrimaryButton}"/>
             <Button x:Name="PayButton" Content="Оплатить" Width="120" Margin="10,0" Click="PayButton_Click" Style="{StaticResource PrimaryButton}"/>
-            <Button x:Name="ShowReceiptButton"
-            Content="Посмотреть чек"
-            Width="150"
-            Margin="10,0"
-            Visibility="Collapsed"
-            Click="ShowReceiptButton_Click"
-            Style="{StaticResource PrimaryButton}"/>
+            
         </StackPanel>
     </Grid>
 </Page>

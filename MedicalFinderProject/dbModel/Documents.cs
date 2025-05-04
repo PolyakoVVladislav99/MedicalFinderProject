@@ -14,12 +14,21 @@ namespace MedicalFinderProject.dbModel
     
     public partial class Documents
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Documents()
+        {
+            this.Appointments = new HashSet<Appointments>();
+        }
+    
         public int DocumentID { get; set; }
         public int UserID { get; set; }
         public string FileName { get; set; }
         public Nullable<System.DateTime> UploadDate { get; set; }
         public string Description { get; set; }
+        public byte[] FileData { get; set; }
     
         public virtual Users Users { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Appointments> Appointments { get; set; }
     }
 }

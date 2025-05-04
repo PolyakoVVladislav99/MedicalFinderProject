@@ -58,5 +58,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Content="На главную" HorizontalAlignment="Left" Margin="40,20,0,0" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" Click="Button_Click"/>
     </Grid>
 </Page>

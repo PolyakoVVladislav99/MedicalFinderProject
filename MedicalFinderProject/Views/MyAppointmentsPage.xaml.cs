@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using iTextSharp.text.pdf.parser;
 using MedicalFinderProject.dbModel;
 
 namespace MedicalFinderProject.Views
@@ -27,6 +30,7 @@ namespace MedicalFinderProject.Views
         public MyAppointmentsPage()
         {
             InitializeComponent();
+            FilterChanged(null, null);
             LoadAppointments();
         }
 
@@ -40,25 +44,21 @@ namespace MedicalFinderProject.Views
 
                 // Получаем все записи из базы
                 allAppointments = context.Appointments
-                    .Where(a => a.UserID == userId)
-                    .ToList()
-                    .Select(a => new AppointmentViewModel
-                    {
-                        AppointmentID = a.AppointmentID,
-                        DoctorName = a.Doctors.LastName + " " + a.Doctors.FirstName,
-                        Status = a.Status,
-                        AppointmentDate = a.AppointmentDate,
-                        Price = a.Services.Price,
-                        ReceiptFilePath = context.Documents
-                            .Where(d => d.UserID == userId && d.Description.Contains(a.AppointmentID.ToString()))
-                            .Select(d => d.FileName)
-                            .FirstOrDefault(),
-                        ReceiptButtonVisibility = context.Documents
-                            .Any(d => d.UserID == userId && d.Description.Contains(a.AppointmentID.ToString()))
-                            ? Visibility.Visible
-                            : Visibility.Collapsed
-                    })
-                    .ToList();
+    .Where(a => a.UserID == userId)
+    .Include(a => a.Doctors)
+    .Include(a => a.Services)
+    .ToList()
+    .Select(a => new AppointmentViewModel
+    {
+        AppointmentID = a.AppointmentID,
+        DoctorName = a.Doctors.LastName + " " + a.Doctors.FirstName,
+        Status = a.Status,
+        AppointmentDate = a.AppointmentDate,
+        Price = a.Services.Price,
+        HasReceipt = a.DocumentID != null,
+        DocumentID = a.DocumentID
+    })
+    .ToList();
 
                 // Привязываем все записи к ListView
                 AppointmentsListView.ItemsSource = allAppointments;
@@ -68,6 +68,8 @@ namespace MedicalFinderProject.Views
 
         private void FilterChanged(object sender, EventArgs e)
         {
+            if (allAppointments == null || MinPriceTextBox == null || StatusComboBox == null || AppointmentsListView == null)
+                return;
             // Фильтрация по дате, статусу и цене
             var filtered = allAppointments.AsEnumerable();
 
@@ -91,6 +93,36 @@ namespace MedicalFinderProject.Views
 
             // Обновляем ItemsSource с отфильтрованными данными
             AppointmentsListView.ItemsSource = filtered.ToList();
+        }
+        private void ShowReceipt_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.DataContext is AppointmentViewModel appointment && appointment.DocumentID.HasValue)
+            {
+                using (var context = new MedicalSpecialistServiceEntities3())
+                {
+                    var doc = context.Documents.Find(appointment.DocumentID.Value);
+                    if (doc != null && doc.FileData != null)
+                    {
+                        string tempPath = System.IO.Path.Combine(System.IO.Path.GetTempPath(), doc.FileName);
+                        File.WriteAllBytes(tempPath, doc.FileData);
+                        Process.Start(new ProcessStartInfo(tempPath) { UseShellExecute = true });
+                    }
+                    else
+                    {
+                        MessageBox.Show("Чек не найден в базе данных.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new MainPage());
         }
     }
 }

@@ -24,6 +24,7 @@
           <Property Name="AppointmentDate" Type="datetime" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="ServiceID" Type="int" Nullable="false" />
+          <Property Name="DocumentID" Type="int" />
         </EntityType>
         <EntityType Name="Clinics">
           <Key>
@@ -67,6 +68,7 @@
           <Property Name="FileName" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="UploadDate" Type="datetime" />
           <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="FileData" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="Favorites">
           <Key>
@@ -379,6 +381,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Appointments_Documents">
+          <End Role="Documents" Type="Self.Documents" Multiplicity="0..1" />
+          <End Role="Appointments" Type="Self.Appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="DocumentID" />
+            </Principal>
+            <Dependent Role="Appointments">
+              <PropertyRef Name="DocumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Services_Doctor">
           <End Role="Doctors" Type="Self.Doctors" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -482,6 +496,10 @@
             <End Role="Services" EntitySet="Services" />
             <End Role="Appointments" EntitySet="Appointments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Appointments_Documents" Association="Self.FK_Appointments_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="Appointments" EntitySet="Appointments" />
+          </AssociationSet>
           <AssociationSet Name="FK_Services_Doctor" Association="Self.FK_Services_Doctor">
             <End Role="Doctors" EntitySet="Doctors" />
             <End Role="Services" EntitySet="Services" />
@@ -514,6 +532,8 @@
           <NavigationProperty Name="Users" Relationship="Self.FK__Appointme__UserI__5BE2A6F2" FromRole="Appointments" ToRole="Users" />
           <Property Name="ServiceID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Services" Relationship="MedicalSpecialistServiceModel.FK_Appointment_Service" FromRole="Appointments" ToRole="Services" />
+          <Property Name="DocumentID" Type="Int32" />
+          <NavigationProperty Name="Documents" Relationship="MedicalSpecialistServiceModel.FK_Appointments_Documents" FromRole="Appointments" ToRole="Documents" />
         </EntityType>
         <EntityType Name="Clinics">
           <Key>
@@ -568,6 +588,8 @@
           <Property Name="UploadDate" Type="DateTime" Precision="3" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Documents__UserI__5FB337D6" FromRole="Documents" ToRole="Users" />
+          <Property Name="FileData" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="Appointments" Relationship="MedicalSpecialistServiceModel.FK_Appointments_Documents" FromRole="Documents" ToRole="Appointments" />
         </EntityType>
         <EntityType Name="Favorites">
           <Key>
@@ -972,6 +994,10 @@
             <End Role="Services" EntitySet="Services" />
             <End Role="Appointments" EntitySet="Appointments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Appointments_Documents" Association="MedicalSpecialistServiceModel.FK_Appointments_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="Appointments" EntitySet="Appointments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Services">
           <Key>
@@ -1011,6 +1037,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Appointments_Documents">
+          <End Type="MedicalSpecialistServiceModel.Documents" Role="Documents" Multiplicity="0..1" />
+          <End Type="MedicalSpecialistServiceModel.Appointments" Role="Appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="DocumentID" />
+            </Principal>
+            <Dependent Role="Appointments">
+              <PropertyRef Name="DocumentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1030,6 +1068,7 @@
           <EntitySetMapping Name="Appointments">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Appointments">
               <MappingFragment StoreEntitySet="Appointments">
+                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
                 <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
@@ -1078,6 +1117,7 @@
           <EntitySetMapping Name="Documents">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Documents">
               <MappingFragment StoreEntitySet="Documents">
+                <ScalarProperty Name="FileData" ColumnName="FileData" />
                 <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />

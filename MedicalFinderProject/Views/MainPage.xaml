@@ -25,7 +25,7 @@
                 <!-- Выбор специализации -->
                 <ComboBox x:Name="SpecializationComboBox" IsEditable="True" Width="400" Margin="0,10" KeyUp="SpecializationComboBox_KeyUp"
                       Style="{StaticResource RoundedComboBox}" Height="47" />
-                
+
                 <Button x:Name="FindSpecialistButton"
                         Style="{StaticResource PrimaryButton}"
             Content="Найти специалиста"
@@ -60,6 +60,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Grid.Column="1" Content="Профиль" HorizontalAlignment="Left" Margin="41,37,0,0" VerticalAlignment="Top" Click="Button_Click" Style="{StaticResource PrimaryButton}"/>
 
     </Grid>
 

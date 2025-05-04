@@ -40,6 +40,7 @@
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Services" Width="1.5" PointX="5.25" PointY="30" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK_Services_Doctor" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK_Appointment_Service" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK_Appointments_Documents" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

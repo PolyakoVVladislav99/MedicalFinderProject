@@ -21,6 +21,9 @@ using Path = System.IO.Path;
 using ZXing;
 using System.Drawing.Imaging;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Data.Entity;
+using System.Xml.Linq;
 
 
 namespace MedicalFinderProject.Views
@@ -57,38 +60,69 @@ namespace MedicalFinderProject.Views
         private void PayButton_Click(object sender, RoutedEventArgs e)
         {
             int userId = SessionManager.CurrentUser.UserID;
+            List<int> newAppointmentIds = new List<int>();
 
-            // Сохраняем записи в Appointment и генерируем чек
-            foreach (var service in Cart)
+            using (var context = new MedicalSpecialistServiceEntities3())
             {
-                var appointment = new Appointments
+                foreach (var service in Cart)
                 {
-                    UserID = userId,
-                    DoctorID = service.DoctorID,
-                    ServiceID = service.ServiceID,
-                    AppointmentDate = service.SelectedDate ?? DateTime.Now, // или выбрасывать исключение
-                    Status = "Ожидается"
-                };
+                    var appointment = new Appointments
+                    {
+                        UserID = userId,
+                        DoctorID = service.DoctorID,
+                        ServiceID = service.ServiceID,
+                        AppointmentDate = service.SelectedDate ?? DateTime.Now,
+                        Status = "Ожидается"
+                    };
 
-                using (var context = new MedicalSpecialistServiceEntities3())
-                {
                     context.Appointments.Add(appointment);
                     context.SaveChanges();
-                    
+
+                    newAppointmentIds.Add(appointment.AppointmentID);
                 }
-                Cart.Clear();
-                NavigationService.Navigate(new MyAppointmentsPage());
+
+                var savedAppointments = context.Appointments
+                    .Where(a => newAppointmentIds.Contains(a.AppointmentID))
+                    .Include(a => a.Doctors)
+                    .Include(a => a.Services)
+                    .Include(a => a.Users)
+                    .ToList();
+
+                // Генерируем PDF-чек
+                string pdfPath = GeneratePdfReceipt(Cart, SessionManager.CurrentUser);
+
+                // Читаем файл PDF как байты
+                byte[] fileBytes = File.ReadAllBytes(pdfPath);
+
+                foreach (var appointment in savedAppointments)
+                {
+                    var document = new Documents
+                    {
+                        UserID = userId,
+                        UploadDate = DateTime.Now,
+                        Description = $"Чек за {appointment.AppointmentDate:dd.MM.yyyy} (AppointmentID: {appointment.AppointmentID})",
+                        FileName = Path.GetFileName(pdfPath),
+                        FileData = fileBytes
+                    };
+
+                    context.Documents.Add(document);
+                    context.SaveChanges();
+                    appointment.DocumentID = document.DocumentID;
+                }
+                
+
+                context.SaveChanges(); 
+
+                
             }
-            
 
-            // Генерируем чек и получаем путь
-            string pdfPath = GeneratePdfReceipt(Cart, SessionManager.CurrentUser);
-
+            Cart.Clear();
             MessageBox.Show("Оплата прошла успешно!");
 
-            // Показываем кнопку "Посмотреть чек"
-            ShowReceiptButton.Visibility = Visibility.Visible;
-            ShowReceiptButton.Tag = pdfPath;
+            NavigationService.Navigate(new MyAppointmentsPage());
+
+
+            
         }
         private string GeneratePdfReceipt(IEnumerable<ServiceViewModel> services, Users user)
         {
@@ -160,19 +194,8 @@ namespace MedicalFinderProject.Views
 
             return path;
         }
+
         
-        private void ShowReceiptButton_Click(object sender, RoutedEventArgs e)
-        {
-            string path = (string)((Button)sender).Tag;
-            if (File.Exists(path))
-            {
-                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(path) { UseShellExecute = true });
-            }
-            else
-            {
-                MessageBox.Show("Файл чека не найден.");
-            }
-        }
         private void Cart_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePayButtonVisibility();

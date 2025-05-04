@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using iTextSharp.text.pdf.parser;
 using MedicalFinderProject.dbModel;
 
 
@@ -152,6 +153,11 @@ namespace MedicalFinderProject.Views
                 DoctorsList.SelectedItem = doctor;
                 NavigationService?.Navigate(new DoctorServicesPage(doctor));
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService?.Navigate(new Profile());
         }
     }
 
