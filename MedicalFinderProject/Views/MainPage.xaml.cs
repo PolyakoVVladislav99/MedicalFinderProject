@@ -112,7 +112,7 @@ namespace MedicalFinderProject.Views
                 }
 
                 // Обновление списка врачей
-                DoctorsList.ItemsSource = filteredDoctors;
+                
             }
 
         }
@@ -147,9 +147,10 @@ namespace MedicalFinderProject.Views
         }
         private void DoctorsList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            if (DoctorsList.SelectedItem is DoctorViewModel selectedDoctor)
+            if (e.OriginalSource is FrameworkElement fe && fe.DataContext is DoctorViewModel doctor)
             {
-                NavigationService?.Navigate(new DoctorServicesPage(selectedDoctor));
+                DoctorsList.SelectedItem = doctor;
+                NavigationService?.Navigate(new DoctorServicesPage(doctor));
             }
         }
     }

@@ -1,0 +1,62 @@
+﻿<Page x:Class="MedicalFinderProject.Views.MyAppointmentsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Мои записи">
+
+    <Grid Background="White">
+        <TextBlock Text="Мои записи" FontSize="24" FontWeight="Bold"
+                   Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,20,0,0"/>
+
+        <TextBlock x:Name="FullNameTextBlock" FontSize="16" FontWeight="SemiBold"
+                   Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,60,0,0"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,100,0,0">
+            <StackPanel Margin="10,0">
+                <TextBlock Text="От даты" FontSize="12" Foreground="#2C3E50"/>
+                <DatePicker x:Name="StartDatePicker" Width="130" SelectedDateChanged="FilterChanged"/>
+            </StackPanel>
+
+            <StackPanel Margin="10,0">
+                <TextBlock Text="До даты" FontSize="12" Foreground="#2C3E50"/>
+                <DatePicker x:Name="EndDatePicker" Width="130" SelectedDateChanged="FilterChanged"/>
+            </StackPanel>
+
+            <StackPanel Margin="10,0">
+                <TextBlock Text="Статус" FontSize="12" Foreground="#2C3E50"/>
+                <ComboBox x:Name="StatusComboBox" Width="150" SelectionChanged="FilterChanged">
+                    <ComboBoxItem Content="Все" IsSelected="True"/>
+                    <ComboBoxItem Content="Ожидается"/>
+                    <ComboBoxItem Content="Завершено"/>
+                    <ComboBoxItem Content="Отменено"/>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Margin="10,0">
+                <TextBlock Text="Мин. цена" FontSize="12" Foreground="#2C3E50"/>
+                <TextBox x:Name="MinPriceTextBox" Width="100" TextChanged="FilterChanged"/>
+            </StackPanel>
+        </StackPanel>
+
+        <ListView x:Name="AppointmentsListView" Margin="40,100,40,40">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Врач" DisplayMemberBinding="{Binding DoctorName}" Width="200"/>
+                    <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding AppointmentDate, StringFormat=dd.MM.yyyy}" Width="150"/>
+                    <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="150"/>
+                    <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Price}" Width="100"/>
+                    <GridViewColumn Header=" " Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Показать чек"
+                                        Click="ShowReceipt_Click"
+                                        Visibility="{Binding ReceiptButtonVisibility}"
+                                        Style="{StaticResource PrimaryButton}"
+                                        HorizontalAlignment="Center"
+                                        Width="120"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>

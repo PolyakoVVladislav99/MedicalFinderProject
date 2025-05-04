@@ -23,6 +23,7 @@
           <Property Name="UserID" Type="int" Nullable="false" />
           <Property Name="AppointmentDate" Type="datetime" Nullable="false" />
           <Property Name="Status" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="ServiceID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Clinics">
           <Key>
@@ -366,6 +367,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Appointment_Service">
+          <End Role="Services" Type="Self.Services" Multiplicity="1" />
+          <End Role="Appointments" Type="Self.Appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ServiceID" />
+            </Principal>
+            <Dependent Role="Appointments">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Services_Doctor">
           <End Role="Doctors" Type="Self.Doctors" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -465,6 +478,10 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
+          <AssociationSet Name="FK_Appointment_Service" Association="Self.FK_Appointment_Service">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Appointments" EntitySet="Appointments" />
+          </AssociationSet>
           <AssociationSet Name="FK_Services_Doctor" Association="Self.FK_Services_Doctor">
             <End Role="Doctors" EntitySet="Doctors" />
             <End Role="Services" EntitySet="Services" />
@@ -495,6 +512,8 @@
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Doctors" Relationship="Self.FK__Appointme__Docto__5AEE82B9" FromRole="Appointments" ToRole="Doctors" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Appointme__UserI__5BE2A6F2" FromRole="Appointments" ToRole="Users" />
+          <Property Name="ServiceID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Services" Relationship="MedicalSpecialistServiceModel.FK_Appointment_Service" FromRole="Appointments" ToRole="Services" />
         </EntityType>
         <EntityType Name="Clinics">
           <Key>
@@ -949,6 +968,10 @@
             <End Role="Doctors" EntitySet="Doctors" />
             <End Role="Services" EntitySet="Services" />
           </AssociationSet>
+          <AssociationSet Name="FK_Appointment_Service" Association="MedicalSpecialistServiceModel.FK_Appointment_Service">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Appointments" EntitySet="Appointments" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Services">
           <Key>
@@ -960,6 +983,7 @@
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
           <NavigationProperty Name="Doctors" Relationship="MedicalSpecialistServiceModel.FK_Services_Doctor" FromRole="Services" ToRole="Doctors" />
+          <NavigationProperty Name="Appointments" Relationship="MedicalSpecialistServiceModel.FK_Appointment_Service" FromRole="Services" ToRole="Appointments" />
         </EntityType>
         <Association Name="FK_Services_Doctor">
           <End Type="MedicalSpecialistServiceModel.Doctors" Role="Doctors" Multiplicity="1">
@@ -972,6 +996,18 @@
             </Principal>
             <Dependent Role="Services">
               <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Appointment_Service">
+          <End Type="MedicalSpecialistServiceModel.Services" Role="Services" Multiplicity="1" />
+          <End Type="MedicalSpecialistServiceModel.Appointments" Role="Appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ServiceID" />
+            </Principal>
+            <Dependent Role="Appointments">
+              <PropertyRef Name="ServiceID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -994,6 +1030,7 @@
           <EntitySetMapping Name="Appointments">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Appointments">
               <MappingFragment StoreEntitySet="Appointments">
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />

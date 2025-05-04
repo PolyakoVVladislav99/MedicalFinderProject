@@ -8,9 +8,13 @@ namespace MedicalFinderProject
 {
     public class ServiceViewModel
     {
+        public int DoctorID { get; set; }
         public int ServiceID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }
+
+
+        public DateTime? SelectedDate { get; set; }
     }
 }

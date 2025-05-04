@@ -14,6 +14,12 @@ namespace MedicalFinderProject.dbModel
     
     public partial class Services
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Services()
+        {
+            this.Appointments = new HashSet<Appointments>();
+        }
+    
         public int ServiceID { get; set; }
         public int DoctorID { get; set; }
         public string Name { get; set; }
@@ -21,5 +27,7 @@ namespace MedicalFinderProject.dbModel
         public decimal Price { get; set; }
     
         public virtual Doctors Doctors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Appointments> Appointments { get; set; }
     }
 }

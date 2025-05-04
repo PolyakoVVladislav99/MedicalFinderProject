@@ -61,6 +61,7 @@ namespace MedicalFinderProject.Views
 
                     MessageBox.Show("Вход выполнен успешно!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
 
+                    SessionManager.CurrentUser = user;
                     MainPage mainPage = new MainPage();
                     NavigationService.Navigate(mainPage);
                 }

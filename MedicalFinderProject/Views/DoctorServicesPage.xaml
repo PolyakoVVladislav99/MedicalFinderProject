@@ -38,11 +38,11 @@
                     <GridViewColumn Header=" " Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Добавить в корзину"
+                                <Button Content="В корзину"
                                     Width="130" Height="30"
                                     HorizontalAlignment="Right"
                                     Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                    CommandParameter="{Binding}"/>
+                                    CommandParameter="{Binding}" Style="{StaticResource PrimaryButton}"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -60,7 +60,7 @@
             VerticalAlignment="Bottom"
             Width="200"
             Margin="0,0,0,20"
-            Click="GoToCartButton_Click"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="40,10,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+            Click="GoToCartButton_Click" Style="{StaticResource PrimaryButton}"/>
+        <Button Content="Вернуться назад" HorizontalAlignment="Left" Margin="40,10,0,0" VerticalAlignment="Top" Click="Button_Click" Style="{StaticResource PrimaryButton}"/>
     </Grid>
 </Page>

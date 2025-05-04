@@ -19,8 +19,10 @@ namespace MedicalFinderProject.dbModel
         public int UserID { get; set; }
         public System.DateTime AppointmentDate { get; set; }
         public string Status { get; set; }
+        public int ServiceID { get; set; }
     
         public virtual Doctors Doctors { get; set; }
         public virtual Users Users { get; set; }
+        public virtual Services Services { get; set; }
     }
 }

@@ -7,12 +7,13 @@
         <TextBlock Text="Корзина" FontSize="24" FontWeight="Bold"
                Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,20,0,0"/>
 
-        <ListView x:Name="CartListView" Margin="40,80,40,100">
+        <ListView x:Name="CartListView" ItemsSource ="{Binding Cart}" Margin="40,80,40,100">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}" Width="300"/>
                     <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}" Width="400"/>
                     <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Price}" Width="150"/>
+                    <GridViewColumn Header="Дата проведения услуги" DisplayMemberBinding="{Binding SelectedDate, StringFormat=dd.MM.yyyy}" Width="150"/>
                 </GridView>
             </ListView.View>
         </ListView>
@@ -22,8 +23,16 @@
                Foreground="#2C3E50" />
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,20">
-            <Button Content="К услугам" Width="120" Margin="10,0" Click="BackToServices_Click"/>
-            <Button Content="Очистить корзину" Width="150" Margin="10,0" Click="ClearCart_Click"/>
+            <Button Content="К услугам" Width="120" Margin="10,0" Click="BackToServices_Click" Style="{StaticResource PrimaryButton}"/>
+            <Button Content="Очистить корзину" Width="150" Margin="10,0" Click="ClearCart_Click" Style="{StaticResource PrimaryButton}"/>
+            <Button x:Name="PayButton" Content="Оплатить" Width="120" Margin="10,0" Click="PayButton_Click" Style="{StaticResource PrimaryButton}"/>
+            <Button x:Name="ShowReceiptButton"
+            Content="Посмотреть чек"
+            Width="150"
+            Margin="10,0"
+            Visibility="Collapsed"
+            Click="ShowReceiptButton_Click"
+            Style="{StaticResource PrimaryButton}"/>
         </StackPanel>
     </Grid>
 </Page>

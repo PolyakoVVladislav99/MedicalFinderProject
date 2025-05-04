@@ -39,6 +39,7 @@
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Users__RoleID__3B75D760" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Services" Width="1.5" PointX="5.25" PointY="30" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK_Services_Doctor" />
+        <AssociationConnector Association="MedicalSpecialistServiceModel.FK_Appointment_Service" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
