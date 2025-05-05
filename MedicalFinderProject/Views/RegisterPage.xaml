@@ -7,38 +7,29 @@ Background="#F2F4F8">
         <Border CornerRadius="20" Background="White" Padding="30" Width="400" 
           HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
-
-                <!-- Заголовок -->
                 <TextBlock Text="Регистрация" FontSize="24" FontWeight="Bold" 
                      Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0 0 0 20"/>
 
-                <!-- ФИО -->
                 <TextBlock Text="ФИО" Margin="0 0 0 5"/>
                 <TextBox x:Name="FullNameBox" 
                    Style="{StaticResource RoundedTextBox}" 
                    Height="40" Margin="0 0 0 15" Cursor="Hand"/>
 
-                <!-- Email -->
                 <TextBlock Text="Email" Margin="0 0 0 5"/>
                 <TextBox x:Name="EmailBox" TextChanged="EmailTextBox_TextChanged"
                    Style="{StaticResource ValidationTextBoxStyle}" 
                    Height="39" Margin="0 0 0 15" Cursor="Hand" FontSize="14"/>
 
-                <!-- Пароль -->
                 <TextBlock Text="Пароль" Margin="0 0 0 5"/>
                 <PasswordBox x:Name="PasswordBox" 
                        Style="{StaticResource RoundedPasswordBox}" 
                        Height="39" Margin="0 0 0 15" Cursor="Hand"/>
 
-                <!-- Телефон -->
                 <TextBlock Text="Телефон" Margin="0 0 0 5"/>
                 <TextBox x:Name="PhoneBox" TextChanged="PhoneTextBox_TextChanged"
                    Style="{StaticResource ValidationTextBoxStyle}" 
                    Height="42" Margin="0 0 0 15" Cursor="Hand"/>
 
-                
-
-                <!-- Кнопка регистрации -->
                 <Button x:Name="RegisterButton" Content="Зарегистрироваться" 
                   Click="RegisterButton_Click"
                   Style="{StaticResource PrimaryButton}" Height="35" Cursor="Hand"/>

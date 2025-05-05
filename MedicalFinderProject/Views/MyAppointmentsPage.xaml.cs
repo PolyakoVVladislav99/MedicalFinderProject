@@ -30,11 +30,11 @@ namespace MedicalFinderProject.Views
         public MyAppointmentsPage()
         {
             InitializeComponent();
-            FilterChanged(null, null);
+            UpdateAppointmentStatuses();
             LoadAppointments();
         }
 
-        private List<AppointmentViewModel> allAppointments; // Переменная для хранения всех записей
+        private List<AppointmentViewModel> allAppointments; 
 
         private void LoadAppointments()
         {
@@ -42,7 +42,7 @@ namespace MedicalFinderProject.Views
             {
                 int userId = SessionManager.CurrentUser.UserID;
 
-                // Получаем все записи из базы
+                
                 allAppointments = context.Appointments
     .Where(a => a.UserID == userId)
     .Include(a => a.Doctors)
@@ -60,7 +60,7 @@ namespace MedicalFinderProject.Views
     })
     .ToList();
 
-                // Привязываем все записи к ListView
+                
                 AppointmentsListView.ItemsSource = allAppointments;
                 FullNameTextBlock.Text = $"Пациент: {SessionManager.CurrentUser.FullName}";
             }
@@ -70,16 +70,16 @@ namespace MedicalFinderProject.Views
         {
             if (allAppointments == null || MinPriceTextBox == null || StatusComboBox == null || AppointmentsListView == null)
                 return;
-            // Фильтрация по дате, статусу и цене
+            
             var filtered = allAppointments.AsEnumerable();
 
-            // Дата
+            
             if (StartDatePicker.SelectedDate is DateTime startDate)
                 filtered = filtered.Where(a => a.AppointmentDate >= startDate);
             if (EndDatePicker.SelectedDate is DateTime endDate)
                 filtered = filtered.Where(a => a.AppointmentDate <= endDate);
 
-            // Статус
+            
             if (StatusComboBox.SelectedItem is ComboBoxItem selectedItem)
             {
                 string status = selectedItem.Content.ToString();
@@ -87,11 +87,11 @@ namespace MedicalFinderProject.Views
                     filtered = filtered.Where(a => a.Status == status);
             }
 
-            // Цена
+            
             if (decimal.TryParse(MinPriceTextBox.Text, out decimal minPrice))
                 filtered = filtered.Where(a => a.Price >= minPrice);
 
-            // Обновляем ItemsSource с отфильтрованными данными
+            
             AppointmentsListView.ItemsSource = filtered.ToList();
         }
         private void ShowReceipt_Click(object sender, RoutedEventArgs e)
@@ -123,6 +123,66 @@ namespace MedicalFinderProject.Views
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             NavigationService?.Navigate(new MainPage());
+        }
+        private void UpdateAppointmentStatuses()
+        {
+            int userId = SessionManager.CurrentUser.UserID;
+
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var now = DateTime.Now;
+
+                var appointmentsToFinish = context.Appointments
+                    .Where(a => a.UserID == userId && a.Status == "Ожидается" && DbFunctions.TruncateTime(a.AppointmentDate) < now.Date)
+                    .ToList();
+
+                foreach (var appointment in appointmentsToFinish)
+                {
+                    appointment.Status = "Завершено";
+                }
+
+                context.SaveChanges();
+            }
+        }
+        private void CancelAppointment_Click(object sender, RoutedEventArgs e)
+        {
+            if ((sender as Button)?.DataContext is AppointmentViewModel model)
+            {
+                var result = MessageBox.Show("Вы уверены, что хотите отменить запись?",
+                                             "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    using (var context = new MedicalSpecialistServiceEntities3())
+                    {
+                        var appointment = context.Appointments.FirstOrDefault(a => a.AppointmentID == model.AppointmentID);
+                        if (appointment != null && appointment.Status == "Ожидается")
+                        {
+                            appointment.Status = "Отменено";
+                            context.SaveChanges();
+
+                            LogUserAction(SessionManager.CurrentUser.UserID, $"Отмена записи (ID: {appointment.AppointmentID})");
+                            MessageBox.Show("Запись успешно отменена.", "Готово", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
+
+                    LoadAppointments(); // метод, который ты уже используешь для загрузки данных
+                }
+            }
+        }
+        public static void LogUserAction(int userId, string action)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var log = new ActivityLogs
+                {
+                    UserID = userId,
+                    Action = action,
+                    LogDate = DateTime.Now
+                };
+                context.ActivityLogs.Add(log);
+                context.SaveChanges();
+            }
         }
     }
 }

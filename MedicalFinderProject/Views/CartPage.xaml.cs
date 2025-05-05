@@ -24,6 +24,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Data.Entity;
 using System.Xml.Linq;
+using ZXing.Aztec.Internal;
 
 
 namespace MedicalFinderProject.Views
@@ -33,9 +34,9 @@ namespace MedicalFinderProject.Views
     /// </summary>
     public partial class CartPage : Page
     {
-        public ObservableCollection<ServiceViewModel> Cart { get; set; }  // Получаем корзину от предыдущей страницы
+        public ObservableCollection<ServiceViewModel> Cart { get; set; }  
 
-        public decimal TotalAmount => Cart.Sum(service => service.Price);  // Общая сумма товаров в корзине
+        public decimal TotalAmount => Cart.Sum(service => service.Price); 
         
 
         public CartPage(ObservableCollection<ServiceViewModel> cart)
@@ -44,7 +45,7 @@ namespace MedicalFinderProject.Views
             Cart = cart;
             Cart.CollectionChanged += Cart_CollectionChanged;
             UpdatePayButtonVisibility();
-            this.DataContext = this;  // Устанавливаем DataContext для биндинга
+            this.DataContext = this;  
             TotalTextBlock.Text = $" Итоговая сумма: { Cart.Sum(service => service.Price) }";
         }
         private void ClearCart_Click(object sender, RoutedEventArgs e)
@@ -55,7 +56,7 @@ namespace MedicalFinderProject.Views
 
         private void BackToServices_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.GoBack(); // или NavigationService.Navigate(new DoctorServicesPage(...));
+            NavigationService.GoBack(); 
         }
         private void PayButton_Click(object sender, RoutedEventArgs e)
         {
@@ -79,8 +80,34 @@ namespace MedicalFinderProject.Views
                     context.SaveChanges();
 
                     newAppointmentIds.Add(appointment.AppointmentID);
-                }
 
+                    var medicalCard = context.MedicalCards.FirstOrDefault(mc => mc.UserID == userId);
+
+                   
+                    if (medicalCard == null)
+                    {
+                        medicalCard = new MedicalCards
+                        {
+                            UserID = userId,
+                            CreatedAt = DateTime.Now
+                        };
+                        context.MedicalCards.Add(medicalCard);
+                        context.SaveChanges();  
+                    }
+
+                    
+                    var medicalRecord = new MedicalRecords
+                    {
+                        CardID = medicalCard.CardID,  
+                        DoctorID = service.DoctorID,  
+                        RecordDate = appointment.AppointmentDate,  
+                        Diagnosis = "",  
+                        Recommendations = ""  
+                    };
+
+                    context.MedicalRecords.Add(medicalRecord);
+                    context.SaveChanges();
+                }
                 var savedAppointments = context.Appointments
                     .Where(a => newAppointmentIds.Contains(a.AppointmentID))
                     .Include(a => a.Doctors)
@@ -88,10 +115,10 @@ namespace MedicalFinderProject.Views
                     .Include(a => a.Users)
                     .ToList();
 
-                // Генерируем PDF-чек
+                
                 string pdfPath = GeneratePdfReceipt(Cart, SessionManager.CurrentUser);
 
-                // Читаем файл PDF как байты
+                
                 byte[] fileBytes = File.ReadAllBytes(pdfPath);
 
                 foreach (var appointment in savedAppointments)
@@ -117,19 +144,18 @@ namespace MedicalFinderProject.Views
             }
 
             Cart.Clear();
+            LogUserAction(userId, "Успешная оплата");
             MessageBox.Show("Оплата прошла успешно!");
 
             NavigationService.Navigate(new MyAppointmentsPage());
 
-
-            
         }
         private string GeneratePdfReceipt(IEnumerable<ServiceViewModel> services, Users user)
         {
             string fileName = $"Чек_{user.FullName}_{DateTime.Now:yyyyMMddHHmmss}.pdf";
             string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), fileName);
 
-            // Шрифт с поддержкой кириллицы
+            
             string fontPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "arial.ttf");
             BaseFont baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             var font = new iTextSharp.text.Font(baseFont, 12);
@@ -140,13 +166,13 @@ namespace MedicalFinderProject.Views
                 PdfWriter writer = PdfWriter.GetInstance(doc, fs);
                 doc.Open();
 
-                // Заголовок
+                
                 doc.Add(new iTextSharp.text.Paragraph("Медицинский чек", new iTextSharp.text.Font(baseFont, 16, Font.BOLD)));
                 doc.Add(new iTextSharp.text.Paragraph($"Пациент: {user.FullName}", font));
                 doc.Add(new iTextSharp.text.Paragraph($"Дата: {DateTime.Now:dd.MM.yyyy HH:mm}", font));
                 doc.Add(new iTextSharp.text.Paragraph(" ", font));
 
-                // Таблица услуг
+                
                 PdfPTable table = new PdfPTable(3) { WidthPercentage = 100 };
                 table.AddCell(new PdfPCell(new Phrase("Название", font)));
                 table.AddCell(new PdfPCell(new Phrase("Дата проведения", font)));
@@ -165,8 +191,8 @@ namespace MedicalFinderProject.Views
                 doc.Add(new iTextSharp.text.Paragraph($"Итого: {services.Sum(x => x.Price)} руб.", font));
                 doc.Add(new iTextSharp.text.Paragraph(" ", font));
 
-                // Генерация QR-кода
-                string qrContent = "https://youtu.be/dQw4w9WgXcQ"; // пасхалка
+                
+                string qrContent = "https://youtu.be/dQw4w9WgXcQ"; 
 
                 var qrWriter = new ZXing.BarcodeWriter
                 {
@@ -203,6 +229,20 @@ namespace MedicalFinderProject.Views
         private void UpdatePayButtonVisibility()
         {
             PayButton.Visibility = Cart.Any() ? Visibility.Visible : Visibility.Collapsed;
+        }
+        public static void LogUserAction(int userId, string action)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var log = new ActivityLogs
+                {
+                    UserID = userId,
+                    Action = action,
+                    LogDate = DateTime.Now
+                };
+                context.ActivityLogs.Add(log);
+                context.SaveChanges();
+            }
         }
     }
 }

@@ -4,12 +4,12 @@
              xmlns:local="clr-namespace:MedicalFinderProject"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <!-- Эффект тени -->
+        
         <DropShadowEffect x:Key="DropShadow"
                       Color="#888" Direction="270" ShadowDepth="5" 
                       Opacity="0.3" BlurRadius="10" />
 
-        <!-- Стиль для TextBox -->
+       
         <Style x:Key="RoundedTextBox" TargetType="TextBox">
             <Setter Property="Height" Value="35"/>
             <Setter Property="Padding" Value="10"/>
@@ -20,7 +20,7 @@
             
         </Style>
 
-        <!-- Стиль для PasswordBox -->
+        
         <Style x:Key="RoundedPasswordBox" TargetType="PasswordBox">
             <Setter Property="Height" Value="35"/>
             <Setter Property="Padding" Value="10"/>
@@ -44,7 +44,7 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Стиль для ComboBox -->
+        
         <Style x:Key="RoundedComboBox" TargetType="ComboBox">
             <Setter Property="Height" Value="35"/>
             <Setter Property="Padding" Value="10"/>
@@ -55,7 +55,7 @@
             
         </Style>
 
-        <!-- Стиль для кнопки -->
+        
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Height" Value="40"/>
             <Setter Property="Background" Value="#4CAF50"/>

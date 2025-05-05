@@ -30,6 +30,7 @@ namespace MedicalFinderProject
             InitializeComponent();
             LoadComboBoxes();
             LoadUserList();
+            LoadActivityLogs();
         }
         private void LoadUserList()
         {
@@ -121,7 +122,7 @@ namespace MedicalFinderProject
             }
 
             MessageBox.Show("Клиника добавлена.");
-            LoadComboBoxes(); // обновить выпадающий список
+            LoadComboBoxes(); 
         }
 
         private void AddUser_Click(object sender, RoutedEventArgs e)
@@ -204,15 +205,59 @@ namespace MedicalFinderProject
         {
             SessionManager.CurrentUser = null;
 
-            // Показываем главное окно с фреймом
+            
             App.MainAppWindow.Show();
 
-            // Навигируем на страницу логина
+            
             App.MainAppWindow.MainFrame.Navigate(new LoginPage());
 
-            // Закрываем админку
+            
             this.Close();
 
+        }
+        private void LoadActivityLogs()
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                
+                var users = context.Users.Select(u => new { u.UserID, u.FullName }).ToList();
+                UserComboBox.ItemsSource = users;
+                UserComboBox.DisplayMemberPath = "FullName";
+                UserComboBox.SelectedValuePath = "UserID";
+
+                
+                var logs = context.ActivityLogs
+                                  .Select(log => new
+                                  {
+                                      UserID = log.UserID,
+                                      Action = log.Action,
+                                      LogDate = log.LogDate
+                                  }).ToList();
+
+                ActivityLogDataGrid.ItemsSource = logs;
+            }
+        }
+
+        private void UserComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (UserComboBox.SelectedValue != null)
+            {
+                int selectedUserId = (int)UserComboBox.SelectedValue;
+
+                using (var context = new MedicalSpecialistServiceEntities3())
+                {
+                    var filteredLogs = context.ActivityLogs
+                                              .Where(log => log.UserID == selectedUserId)
+                                              .Select(log => new
+                                              {
+                                                  UserID = log.UserID,
+                                                  Action = log.Action,
+                                                  LogDate = log.LogDate
+                                              }).ToList();
+
+                    ActivityLogDataGrid.ItemsSource = filteredLogs;
+                }
+            }
         }
     }
 }

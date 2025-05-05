@@ -1,0 +1,18 @@
+﻿<Page x:Class="MedicalFinderProject.Views.MedicalCardPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Моя медицинская карта" Height="600" Width="800">
+
+    <Grid>
+        <StackPanel>
+            
+            <TextBlock Text="Моя медицинская карта" FontSize="24" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="20"/>
+
+            
+            <TextBlock x:Name="CreatedAtTextBlock" FontSize="16" Foreground="#2C3E50" Margin="10" HorizontalAlignment="Center"/>
+
+            
+            <DataGrid x:Name="MedicalRecordsDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="True" Margin="20"/>
+        </StackPanel>
+    </Grid>
+</Page>

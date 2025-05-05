@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MedicalFinderProject.dbModel;
+using static MedicalFinderProject.Constants;
 
 namespace MedicalFinderProject.Views
 {
@@ -46,8 +47,10 @@ namespace MedicalFinderProject.Views
                 using (var context = new MedicalSpecialistServiceEntities3())
                 {
                     var user = context.Users.FirstOrDefault(u => u.Email == email);
+
                     if (user == null)
                     {
+                        LogUserAction(SYSTEM_USER_ID, "Неудачная попытка входа с неверным email");
                         MessageBox.Show("Пользователь не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
@@ -56,9 +59,12 @@ namespace MedicalFinderProject.Views
 
                     if (user.PasswordHash != enteredHash)
                     {
+                        LogUserAction(user.UserID, "Неудачная попытка входа с неверным паролем");
                         MessageBox.Show("Неверный пароль.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                         return;
                     }
+
+                    LogUserAction(user.UserID, "Вход в систему (успешно)");
 
                     if (user.RoleID == 1)
                     {
@@ -68,9 +74,6 @@ namespace MedicalFinderProject.Views
                         mainWindow.Hide();
                         return;
                     }
-
-
-                    
 
                     SessionManager.CurrentUser = user;
                     MainPage mainPage = new MainPage();
@@ -92,14 +95,28 @@ namespace MedicalFinderProject.Views
             }
         }
         private void RegisterLink_Click(object sender, RoutedEventArgs e)
-        {
-            // Переход на страницу регистрации
+        {   
             this.NavigationService?.Navigate(new RegisterPage());
         }
         private void ResetPassword_Click(object sender, RoutedEventArgs e)
-        {
-            // Переходим на страницу сброса пароля
+        { 
             NavigationService?.Navigate(new ForgotPasswordPage());
+        }
+        
+        private void LogUserAction(int userId, string action)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var log = new ActivityLogs
+                {
+                    UserID = userId,
+                    Action = action,
+                    LogDate = DateTime.Now
+                };
+
+                context.ActivityLogs.Add(log);
+                context.SaveChanges();
+            }
         }
     }
 }

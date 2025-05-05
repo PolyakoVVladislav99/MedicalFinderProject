@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MedicalFinderProject.dbModel;
+using static MedicalFinderProject.Constants;
 
 namespace MedicalFinderProject.Views
 {
@@ -39,22 +40,20 @@ namespace MedicalFinderProject.Views
 
             using (var context = new MedicalSpecialistServiceEntities3())
             {
-                // Находим пользователя по токену
+               
                 var user = context.Users.FirstOrDefault(u => u.ResetPasswordToken == token);
                 if (user == null)
                 {
+                    LogUserAction(SYSTEM_USER_ID, $"Попытка сброса пароля с неверным токеном: {token}");
                     MessageBox.Show("Неверный токен.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-
-                // Хэшируем новый пароль
                 string newPasswordHash = HashPassword(newPassword);
-
-                // Обновляем пароль в базе данных
                 user.PasswordHash = newPasswordHash;
-                user.ResetPasswordToken = null; // Очищаем токен после использования
+                user.ResetPasswordToken = null;
                 context.SaveChanges();
 
+                LogUserAction(user.UserID, "Сброс пароля");
                 MessageBox.Show("Пароль успешно сброшен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 NavigationService.Navigate(new LoginPage());
             }
@@ -67,6 +66,20 @@ namespace MedicalFinderProject.Views
                 byte[] bytes = Encoding.UTF8.GetBytes(password.Trim());
                 byte[] hashBytes = sha256.ComputeHash(bytes);
                 return Convert.ToBase64String(hashBytes);
+            }
+        }
+        public static void LogUserAction(int userId, string action)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var log = new ActivityLogs
+                {
+                    UserID = userId,
+                    Action = action,
+                    LogDate = DateTime.Now
+                };
+                context.ActivityLogs.Add(log);
+                context.SaveChanges();
             }
         }
     }

@@ -25,7 +25,7 @@ namespace MedicalFinderProject.Views
         private DoctorViewModel doctor;
 
         public ObservableCollection<ServiceViewModel> DoctorServices { get; set; }
-        public ObservableCollection<ServiceViewModel> Cart { get; set; }  // Для хранения добавленных в корзину услуг
+        public ObservableCollection<ServiceViewModel> Cart { get; set; }  
 
         public DoctorServicesPage(DoctorViewModel doctor)
         {
@@ -33,7 +33,7 @@ namespace MedicalFinderProject.Views
             this.doctor = doctor;
             Cart = new ObservableCollection<ServiceViewModel>();
             LoadDoctorServices();
-            this.DataContext = this;  // Устанавливаем DataContext для биндинга
+            this.DataContext = this;  
         }
         private void LoadDoctorServices()
         {
@@ -109,7 +109,7 @@ namespace MedicalFinderProject.Views
 
             if (dialogWindow.ShowDialog() == true && datePicker.SelectedDate.HasValue)
             {
-                service.SelectedDate = datePicker.SelectedDate.Value; // Добавь это свойство в ServiceViewModel
+                service.SelectedDate = datePicker.SelectedDate.Value; 
                 Cart.Add(service);
                 MessageBox.Show($"Услуга '{service.Name}' добавлена в корзину на дату {service.SelectedDate:dd.MM.yyyy}.");
             }
@@ -122,7 +122,7 @@ namespace MedicalFinderProject.Views
 
         private void GoToCartButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new CartPage(Cart));  // Переход на страницу корзины
+            NavigationService.Navigate(new CartPage(Cart));  
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

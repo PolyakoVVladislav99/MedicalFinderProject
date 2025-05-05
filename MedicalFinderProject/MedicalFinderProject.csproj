@@ -84,6 +84,7 @@
       <DependentUpon>AdminPanelWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AppointmentViewModel.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="dbModel\ActivityLogs.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -155,6 +156,9 @@
     <Compile Include="Views\CartPage.xaml.cs">
       <DependentUpon>CartPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DoctorSchedulePage.xaml.cs">
+      <DependentUpon>DoctorSchedulePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DoctorServicesPage.xaml.cs">
       <DependentUpon>DoctorServicesPage.xaml</DependentUpon>
     </Compile>
@@ -166,6 +170,9 @@
     </Compile>
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MedicalCardPage.xaml.cs">
+      <DependentUpon>MedicalCardPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyAppointmentsPage.xaml.cs">
       <DependentUpon>MyAppointmentsPage.xaml</DependentUpon>
@@ -199,6 +206,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\DoctorSchedulePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DoctorServicesPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -212,6 +223,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MedicalCardPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -34,6 +34,7 @@ namespace MedicalFinderProject.dbModel
         public string Phone { get; set; }
         public int RoleID { get; set; }
         public string ResetPasswordToken { get; set; }
+        public byte[] ProfilePicture { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ActivityLogs> ActivityLogs { get; set; }

@@ -1,7 +1,7 @@
 ﻿<Page x:Class="MedicalFinderProject.Views.MyAppointmentsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Title="Мои записи">
+      Title="Мои записи" Loaded="Page_Loaded">
 
     <Grid Background="White">
         <TextBlock Text="Мои записи" FontSize="24" FontWeight="Bold"
@@ -46,12 +46,20 @@
                     <GridViewColumn Header=" " Width="150">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Показать чек"
-                                        Click="ShowReceipt_Click"
-                                        Visibility="{Binding ReceiptButtonVisibility}"
-                                        Style="{StaticResource PrimaryButton}"
-                                        HorizontalAlignment="Center"
-                                        Width="120"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="Показать чек"
+                        Click="ShowReceipt_Click"
+                        Visibility="{Binding ReceiptButtonVisibility}"
+                        Style="{StaticResource PrimaryButton}"
+                        Width="120"
+                        Margin="0,0,10,0"/>
+
+                                    <Button Content="Отменить"
+                        Click="CancelAppointment_Click"
+                        Visibility="{Binding CancelButtonVisibility}"
+                        Style="{StaticResource PrimaryButton}"
+                        Width="120"/>
+                                </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

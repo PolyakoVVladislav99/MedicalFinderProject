@@ -164,6 +164,7 @@
           <Property Name="Phone" Type="nvarchar" MaxLength="20" />
           <Property Name="RoleID" Type="int" Nullable="false" />
           <Property Name="ResetPasswordToken" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProfilePicture" Type="varbinary(max)" />
         </EntityType>
         <Association Name="FK__ActivityL__UserI__6383C8BA">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
@@ -696,6 +697,7 @@
           <NavigationProperty Name="Messages1" Relationship="Self.FK__Messages__Sender__6754599E" FromRole="Users" ToRole="Messages" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__UserI__71D1E811" FromRole="Users" ToRole="Notifications" />
           <NavigationProperty Name="Roles" Relationship="Self.FK__Users__RoleID__3B75D760" FromRole="Users" ToRole="Roles" />
+          <Property Name="ProfilePicture" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK__ActivityL__UserI__6383C8BA">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
@@ -1210,6 +1212,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Users">
               <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />

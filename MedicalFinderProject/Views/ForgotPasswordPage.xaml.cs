@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MedicalFinderProject.dbModel;
+using static MedicalFinderProject.Constants;
 
 namespace MedicalFinderProject.Views
 {
@@ -32,36 +33,50 @@ namespace MedicalFinderProject.Views
             using (var context = new MedicalSpecialistServiceEntities3())   
             {
                 var user = context.Users.FirstOrDefault(u => u.Email == email);
-                if (user == null)
+                if (string.IsNullOrWhiteSpace(email))
                 {
-                    MessageBox.Show("Пользователь с таким email не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    LogUserAction(SYSTEM_USER_ID, $"Попытка сброса пароля c пустыми полями");
+                    MessageBox.Show("Пожалуйста, заполните все поля.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+                if (user == null)
+                {
+                    LogUserAction(Constants.SYSTEM_USER_ID, $"Попытка сброса пароля с неверным email: {email}");
+                    MessageBox.Show("Такой email не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                
 
-                // Генерация токена сброса пароля
+                
                 string token = GenerateResetToken(user.UserID);
 
-                // Сохраняем токен в базе данных
+                
                 user.ResetPasswordToken = token;
                 context.SaveChanges();
-
-                // Отображаем токен в TextBlock
                 ResetTokenText.Text = $"{token}";
-
-                // Автоматически копируем токен в буфер обмена
                 Clipboard.SetText(token);
-
-                // Показываем уведомление, что токен скопирован
                 MessageBox.Show("Токен для сброса пароля скопирован в буфер обмена. Используйте его на странице сброса пароля.",
                                 "Сброс пароля", MessageBoxButton.OK, MessageBoxImage.Information);
                 NavigationService.Navigate(new ResetPasswordPage());
             }
         }
-
         private string GenerateResetToken(int userId)
         {
-            // Генерация токена с использованием GUID
             return Guid.NewGuid().ToString();
+        }
+        public static void LogUserAction(int userId, string action)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var log = new ActivityLogs
+                {
+                    UserID = userId,
+                    Action = action,
+                    LogDate = DateTime.Now
+                };
+                context.ActivityLogs.Add(log);
+                context.SaveChanges();
+            }
         }
     }
 }

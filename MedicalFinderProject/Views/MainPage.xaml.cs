@@ -34,7 +34,6 @@ namespace MedicalFinderProject.Views
             LoadSpecializations();
         }
 
-        // Загрузка городов
         private void LoadCities()
         {
             using (var context = new MedicalSpecialistServiceEntities3())
@@ -44,7 +43,6 @@ namespace MedicalFinderProject.Views
             }
         }
 
-        // Загрузка специализаций
         private void LoadSpecializations()
         {
             using (var context = new MedicalSpecialistServiceEntities3())
@@ -54,31 +52,27 @@ namespace MedicalFinderProject.Views
             }
         }
 
-        // Обработчик для поиска по городу
         private void CityComboBox_KeyUp(object sender, KeyEventArgs e)
         {
             string query = CityComboBox.Text.ToLower();
             var filteredCities = cities.Where(c => c.ToLower().Contains(query)).ToList();
             CityComboBox.ItemsSource = filteredCities;
-            CityComboBox.IsDropDownOpen = true; // Открываем выпадающий список
+            CityComboBox.IsDropDownOpen = true; 
         }
 
-        // Обработчик для поиска по специализации
         private void SpecializationComboBox_KeyUp(object sender, KeyEventArgs e)
         {
             string query = SpecializationComboBox.Text.ToLower();
             var filteredSpecializations = specializations.Where(s => s.ToLower().Contains(query)).ToList();
             SpecializationComboBox.ItemsSource = filteredSpecializations;
-            SpecializationComboBox.IsDropDownOpen = true; // Открываем выпадающий список
+            SpecializationComboBox.IsDropDownOpen = true; 
         }
 
-        // Обработчик для кнопки "Найти специалиста"
         private void FindSpecialistButton_Click(object sender, RoutedEventArgs e)
         {
             string selectedCity = CityComboBox.Text;
             string selectedSpecialization = SpecializationComboBox.Text;
 
-            // Применение фильтров
             using (var context = new MedicalSpecialistServiceEntities3())
             {
                 var filteredDoctors = (from d in context.Doctors
@@ -101,25 +95,21 @@ namespace MedicalFinderProject.Views
 
                 if (filteredDoctors.Count == 0)
                 {
-                    NoDoctorsFoundMessage.Visibility = Visibility.Visible; // Показываем сообщение об отсутствии врачей
-                    DoctorsList.Visibility = Visibility.Collapsed; // Скрываем список
-                    ShowAllButton.Visibility = Visibility.Visible; // Показываем кнопку "Показать всех"
+                    NoDoctorsFoundMessage.Visibility = Visibility.Visible; 
+                    DoctorsList.Visibility = Visibility.Collapsed; 
+                    ShowAllButton.Visibility = Visibility.Visible; 
                 }
                 else
                 {
-                    NoDoctorsFoundMessage.Visibility = Visibility.Collapsed; // Скрываем сообщение
-                    DoctorsList.Visibility = Visibility.Visible; // Показываем список
-                    DoctorsList.ItemsSource = filteredDoctors; // Отображаем отфильтрованных врачей
+                    NoDoctorsFoundMessage.Visibility = Visibility.Collapsed;
+                    DoctorsList.Visibility = Visibility.Visible; 
+                    DoctorsList.ItemsSource = filteredDoctors; 
                 }
-
-                // Обновление списка врачей
-                
             }
-
         }
         private void ShowAllButton_Click(object sender, RoutedEventArgs e)
         {
-            // Сбрасываем фильтры и показываем всех врачей
+            
             NoDoctorsFoundMessage.Visibility = Visibility.Collapsed;
             DoctorsList.Visibility = Visibility.Visible;
             ShowAllButton.Visibility = Visibility.Collapsed;
@@ -129,6 +119,7 @@ namespace MedicalFinderProject.Views
                 var allDoctors = (from d in context.Doctors
                                   join c in context.Clinics on d.ClinicID equals c.ClinicID
                                   join s in context.Specializations on d.SpecializationID equals s.SpecializationID
+                                  
                                   select new DoctorViewModel
                                   {
                                       DoctorID = d.DoctorID,

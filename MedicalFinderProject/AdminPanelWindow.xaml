@@ -9,11 +9,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Заголовок -->
+        
         <TextBlock Text="Админ-панель" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
         <TabControl Grid.Row="1" Margin="0,40,0,0">
-            <!-- Вкладка: Добавить врача -->
+            
             <TabItem Header="Добавить врача">
                 <StackPanel Margin="20">
                     <TextBlock Text="Фамилия" />
@@ -38,7 +38,7 @@
                 </StackPanel>
             </TabItem>
 
-            <!-- Вкладка: Добавить клинику -->
+            
             <TabItem Header="Добавить клинику">
                 <StackPanel Margin="20">
                     <TextBlock Text="Название клиники" />
@@ -57,7 +57,7 @@
                 </StackPanel>
             </TabItem>
 
-            <!-- Вкладка: Добавить пользователя -->
+            
             <TabItem Header="Добавить пользователя">
                 <StackPanel Margin="20">
                     <TextBlock Text="ФИО" />
@@ -109,6 +109,14 @@
                             </ListView.View>
                         </ListView>
                     </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Логи действий пользователей">
+                <Grid>
+                    <ComboBox x:Name="UserComboBox" HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" 
+                  Margin="10,10,0,0" SelectionChanged="UserComboBox_SelectionChanged"/>
+                    <DataGrid x:Name="ActivityLogDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                  AutoGenerateColumns="True" Margin="10"/>
                 </Grid>
             </TabItem>
         </TabControl>

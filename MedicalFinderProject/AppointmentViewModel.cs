@@ -17,8 +17,7 @@ namespace MedicalFinderProject
         public int? DocumentID { get; set; }
         public bool HasReceipt { get; set; }
 
-
-        // Прямо возвращаем Visibility
         public Visibility ReceiptButtonVisibility => HasReceipt ? Visibility.Visible : Visibility.Collapsed;
+        public Visibility CancelButtonVisibility => Status == "Ожидается" ? Visibility.Visible : Visibility.Collapsed;
     }
 }
