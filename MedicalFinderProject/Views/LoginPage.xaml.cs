@@ -23,6 +23,7 @@ namespace MedicalFinderProject.Views
     public partial class LoginPage : Page
     {
         MedicalSpecialistServiceEntities3 db = new MedicalSpecialistServiceEntities3();
+        
         public LoginPage()
         {
             InitializeComponent();
@@ -59,7 +60,17 @@ namespace MedicalFinderProject.Views
                         return;
                     }
 
-                    MessageBox.Show("Вход выполнен успешно!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (user.RoleID == 1)
+                    {
+                        AdminPanelWindow adminWindow = new AdminPanelWindow();
+                        adminWindow.Show();
+                        Window mainWindow = Application.Current.MainWindow;
+                        mainWindow.Hide();
+                        return;
+                    }
+
+
+                    
 
                     SessionManager.CurrentUser = user;
                     MainPage mainPage = new MainPage();

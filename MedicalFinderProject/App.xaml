@@ -31,6 +31,19 @@
             
         </Style>
 
+        <Style TargetType="TextBox" x:Key="ValidationTextBoxStyle">
+            <Style.Triggers>
+                <Trigger Property="Tag" Value="Invalid">
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="FontSize" Value="14"/>
+                    <Setter Property="Height" Value="35"/>
+                    <Setter Property="Padding" Value="10"/>
+                    <Setter Property="Background" Value="#F9FAFB"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Стиль для ComboBox -->
         <Style x:Key="RoundedComboBox" TargetType="ComboBox">
             <Setter Property="Height" Value="35"/>

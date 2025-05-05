@@ -13,5 +13,6 @@ namespace MedicalFinderProject
     /// </summary>
     public partial class App : Application
     {
+        public static MainWindow MainAppWindow { get; set; }
     }
 }

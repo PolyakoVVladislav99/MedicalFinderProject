@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -28,9 +29,7 @@ namespace MedicalFinderProject.Views
             InitializeComponent();
 
             // Загружаем роли, кроме "Админ"
-            RoleComboBox.ItemsSource = db.Roles
-                .Where(r => r.RoleName != "Админ")
-                .ToList();
+            
         }
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -38,14 +37,28 @@ namespace MedicalFinderProject.Views
             string email = EmailBox.Text.Trim().ToLower();
             string password = PasswordBox.Password;
             string phone = PhoneBox.Text.Trim();
-            var selectedRoleId = (int)RoleComboBox.SelectedValue;
+            
 
 
 
             if (string.IsNullOrEmpty(fullName) || string.IsNullOrEmpty(email) ||
-                string.IsNullOrEmpty(password) || selectedRoleId == 0 || string.IsNullOrEmpty(phone))
+                string.IsNullOrEmpty(password) || string.IsNullOrEmpty(phone))
             {
                 MessageBox.Show("Пожалуйста, заполните все поля.");
+                return;
+            }
+
+            // Проверка email на корректность
+            if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                MessageBox.Show("Некорректный формат email.");
+                return;
+            }
+
+            // Проверка телефона на корректность (только цифры, +, -, скобки, пробелы, от 10 до 15 символов)
+            if (!Regex.IsMatch(phone, @"^\+?\d[\d\s\-\(\)]{9,14}$"))
+            {
+                MessageBox.Show("Некорректный формат номера телефона.");
                 return;
             }
 
@@ -66,7 +79,7 @@ namespace MedicalFinderProject.Views
                 Email = email,
                 PasswordHash = hashedPassword,
                 Phone = phone,
-                RoleID = selectedRoleId
+                RoleID = 2
             };
 
             db.Users.Add(newUser);
@@ -74,6 +87,7 @@ namespace MedicalFinderProject.Views
 
             MessageBox.Show("Регистрация успешна!");
             // Переход на логин или главную страницу
+            NavigationService.Navigate(new LoginPage());
         }
 
         private string HashPassword(string password)
@@ -89,5 +103,20 @@ namespace MedicalFinderProject.Views
         {
             this.NavigationService?.Navigate(new LoginPage());
         }
+        private void EmailTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!Regex.IsMatch(EmailBox.Text, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+                EmailBox.Tag = "Invalid";
+            else
+                EmailBox.Tag = null;
+        }
+        private void PhoneTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (!Regex.IsMatch(PhoneBox.Text, @"^\+?\d[\d\s\-\(\)]{9,14}$"))
+                PhoneBox.Tag = "Invalid";
+            else
+                PhoneBox.Tag = null;
+        }
+
     }
 }

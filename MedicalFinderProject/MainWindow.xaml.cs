@@ -28,9 +28,10 @@ namespace MedicalFinderProject
         public MainWindow()
         {
             InitializeComponent();
-
-            // Устанавливаем страницу регистрации как начальную
             MainFrame.Navigate(new RegisterPage());
+            App.MainAppWindow = this;
         }
+        
+        
     }
 }

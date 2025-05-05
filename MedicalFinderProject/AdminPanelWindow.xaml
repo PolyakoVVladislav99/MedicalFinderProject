@@ -1,0 +1,117 @@
+﻿<Window x:Class="MedicalFinderProject.AdminPanelWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Админ-панель" Height="600" Width="800">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Text="Админ-панель" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+        <TabControl Grid.Row="1" Margin="0,40,0,0">
+            <!-- Вкладка: Добавить врача -->
+            <TabItem Header="Добавить врача">
+                <StackPanel Margin="20">
+                    <TextBlock Text="Фамилия" />
+                    <TextBox x:Name="DoctorLastNameTextBox"/>
+
+                    <TextBlock Text="Имя" Margin="0,10,0,0"/>
+                    <TextBox x:Name="DoctorFirstNameTextBox"/>
+
+                    <TextBlock Text="Отчество" Margin="0,10,0,0"/>
+                    <TextBox x:Name="DoctorMiddleNameTextBox"/>
+
+                    <TextBlock Text="Биография" Margin="0,10,0,0"/>
+                    <TextBox x:Name="DoctorBiographyTextBox" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+
+                    <TextBlock Text="Специализация" Margin="0,10,0,0"/>
+                    <ComboBox x:Name="SpecializationComboBox" />
+
+                    <TextBlock Text="Клиника" Margin="0,10,0,0"/>
+                    <ComboBox x:Name="ClinicComboBox" />
+
+                    <Button Content="Добавить врача" Click="AddDoctor_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </TabItem>
+
+            <!-- Вкладка: Добавить клинику -->
+            <TabItem Header="Добавить клинику">
+                <StackPanel Margin="20">
+                    <TextBlock Text="Название клиники" />
+                    <TextBox x:Name="ClinicNameTextBox"/>
+
+                    <TextBlock Text="Город" Margin="0,10,0,0"/>
+                    <TextBox x:Name="ClinicCityTextBox"/>
+
+                    <TextBlock Text="Адрес" Margin="0,10,0,0"/>
+                    <TextBox x:Name="ClinicAddressTextBox"/>
+
+                    <TextBlock Text="Телефон" Margin="0,10,0,0"/>
+                    <TextBox x:Name="ClinicPhoneTextBox"/>
+
+                    <Button Content="Добавить клинику" Click="AddClinic_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </TabItem>
+
+            <!-- Вкладка: Добавить пользователя -->
+            <TabItem Header="Добавить пользователя">
+                <StackPanel Margin="20">
+                    <TextBlock Text="ФИО" />
+                    <TextBox x:Name="UserFullNameTextBox"/>
+
+                    <TextBlock Text="Email" Margin="0,10,0,0"/>
+                    <TextBox x:Name="UserEmailTextBox"/>
+
+                    <TextBlock Text="Телефон" Margin="0,10,0,0"/>
+                    <TextBox x:Name="UserPhoneTextBox"/>
+
+                    <TextBlock Text="Пароль" Margin="0,10,0,0"/>
+                    <PasswordBox x:Name="UserPasswordBox"/>
+
+                    <CheckBox x:Name="IsAdminCheckBox" Content="Назначить админом" Margin="0,10,0,0"/>
+
+                    <Button Content="Добавить пользователя" Click="AddUser_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Назначения пользователей">
+                <Grid Background="White">
+                    <StackPanel Margin="20">
+                        <TextBlock Text="Список пользователей" FontSize="20" FontWeight="Bold" Margin="0,0,0,10"/>
+                        <ListView x:Name="UserListView" SelectionMode="Single" Height="200">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="5">
+                                        <TextBlock Text="{Binding FullName}" FontSize="16" Width="250"/>
+                                        <Button Content="Посмотреть назначения"
+                                    Tag="{Binding UserID}"
+                                    Click="ViewAppointments_Click"
+                                    Margin="20,0,0,0"/>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+
+                        <Separator Margin="0,20"/>
+
+                        <TextBlock x:Name="SelectedUserNameText" FontSize="18" FontWeight="SemiBold" Margin="0,10"/>
+                        <ListView x:Name="AppointmentListView">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding AppointmentDate}"/>
+                                    <GridViewColumn Header="Врач" DisplayMemberBinding="{Binding DoctorName}"/>
+                                    <GridViewColumn Header="Услуга" DisplayMemberBinding="{Binding ServiceName}"/>
+                                    <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+        </TabControl>
+        <Button Content="exit" HorizontalAlignment="Left" Margin="644,10,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+    </Grid>
+</Window>
