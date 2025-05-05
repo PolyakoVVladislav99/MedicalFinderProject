@@ -65,6 +65,7 @@ namespace MedicalFinderProject.Views
                     }
 
                     LogUserAction(user.UserID, "Вход в систему (успешно)");
+                    AddNotification(user.UserID, "Успешный вход");
 
                     if (user.RoleID == 1)
                     {
@@ -115,6 +116,22 @@ namespace MedicalFinderProject.Views
                 };
 
                 context.ActivityLogs.Add(log);
+                context.SaveChanges();
+            }
+        }
+        public void AddNotification(int userId, string message)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var notification = new Notifications
+                {
+                    UserID = userId,
+                    Message = message,
+                    IsRead = false,
+                    SentAt = DateTime.Now
+                };
+
+                context.Notifications.Add(notification);
                 context.SaveChanges();
             }
         }

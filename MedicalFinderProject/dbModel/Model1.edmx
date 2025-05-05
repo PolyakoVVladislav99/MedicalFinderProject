@@ -98,16 +98,6 @@
           <Property Name="Diagnosis" Type="nvarchar(max)" />
           <Property Name="Recommendations" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="Messages">
-          <Key>
-            <PropertyRef Name="MessageID" />
-          </Key>
-          <Property Name="MessageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SenderID" Type="int" Nullable="false" />
-          <Property Name="ReceiverID" Type="int" Nullable="false" />
-          <Property Name="MessageText" Type="nvarchar(max)" />
-          <Property Name="SentAt" Type="datetime" />
-        </EntityType>
         <EntityType Name="Notifications">
           <Key>
             <PropertyRef Name="NotificationID" />
@@ -310,30 +300,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Messages__Receiv__68487DD7">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Messages">
-              <PropertyRef Name="ReceiverID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Messages__Sender__6754599E">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Messages">
-              <PropertyRef Name="SenderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Notificat__UserI__71D1E811">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
@@ -418,7 +384,6 @@
           <EntitySet Name="Favorites" EntityType="Self.Favorites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MedicalCards" EntityType="Self.MedicalCards" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MedicalRecords" EntityType="Self.MedicalRecords" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reviews" EntityType="Self.Reviews" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
@@ -472,14 +437,6 @@
           <AssociationSet Name="FK__MedicalRe__Docto__4E88ABD4" Association="Self.FK__MedicalRe__Docto__4E88ABD4">
             <End Role="Doctors" EntitySet="Doctors" />
             <End Role="MedicalRecords" EntitySet="MedicalRecords" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Messages__Receiv__68487DD7" Association="Self.FK__Messages__Receiv__68487DD7">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Messages" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Messages__Sender__6754599E" Association="Self.FK__Messages__Sender__6754599E">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Messages" EntitySet="Messages" />
           </AssociationSet>
           <AssociationSet Name="FK__Notificat__UserI__71D1E811" Association="Self.FK__Notificat__UserI__71D1E811">
             <End Role="Users" EntitySet="Users" />
@@ -626,18 +583,6 @@
           <NavigationProperty Name="Doctors" Relationship="Self.FK__MedicalRe__Docto__4E88ABD4" FromRole="MedicalRecords" ToRole="Doctors" />
           <NavigationProperty Name="MedicalCards" Relationship="Self.FK__MedicalRe__CardI__4D94879B" FromRole="MedicalRecords" ToRole="MedicalCards" />
         </EntityType>
-        <EntityType Name="Messages">
-          <Key>
-            <PropertyRef Name="MessageID" />
-          </Key>
-          <Property Name="MessageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SenderID" Type="Int32" Nullable="false" />
-          <Property Name="ReceiverID" Type="Int32" Nullable="false" />
-          <Property Name="MessageText" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="SentAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Messages__Receiv__68487DD7" FromRole="Messages" ToRole="Users" />
-          <NavigationProperty Name="Users1" Relationship="Self.FK__Messages__Sender__6754599E" FromRole="Messages" ToRole="Users" />
-        </EntityType>
         <EntityType Name="Notifications">
           <Key>
             <PropertyRef Name="NotificationID" />
@@ -693,8 +638,6 @@
           <NavigationProperty Name="Documents" Relationship="Self.FK__Documents__UserI__5FB337D6" FromRole="Users" ToRole="Documents" />
           <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorites__UserI__6C190EBB" FromRole="Users" ToRole="Favorites" />
           <NavigationProperty Name="MedicalCards" Relationship="Self.FK__MedicalCa__UserI__49C3F6B7" FromRole="Users" ToRole="MedicalCards" />
-          <NavigationProperty Name="Messages" Relationship="Self.FK__Messages__Receiv__68487DD7" FromRole="Users" ToRole="Messages" />
-          <NavigationProperty Name="Messages1" Relationship="Self.FK__Messages__Sender__6754599E" FromRole="Users" ToRole="Messages" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__UserI__71D1E811" FromRole="Users" ToRole="Notifications" />
           <NavigationProperty Name="Roles" Relationship="Self.FK__Users__RoleID__3B75D760" FromRole="Users" ToRole="Roles" />
           <Property Name="ProfilePicture" Type="Binary" MaxLength="Max" FixedLength="false" />
@@ -855,30 +798,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Messages__Receiv__68487DD7">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Messages">
-              <PropertyRef Name="ReceiverID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Messages__Sender__6754599E">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Users">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Messages">
-              <PropertyRef Name="SenderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__Notificat__UserI__71D1E811">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
@@ -913,7 +832,6 @@
           <EntitySet Name="Favorites" EntityType="Self.Favorites" />
           <EntitySet Name="MedicalCards" EntityType="Self.MedicalCards" />
           <EntitySet Name="MedicalRecords" EntityType="Self.MedicalRecords" />
-          <EntitySet Name="Messages" EntityType="Self.Messages" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" />
           <EntitySet Name="Reviews" EntityType="Self.Reviews" />
           <EntitySet Name="Roles" EntityType="Self.Roles" />
@@ -970,14 +888,6 @@
           <AssociationSet Name="FK__MedicalRe__CardI__4D94879B" Association="Self.FK__MedicalRe__CardI__4D94879B">
             <End Role="MedicalCards" EntitySet="MedicalCards" />
             <End Role="MedicalRecords" EntitySet="MedicalRecords" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Messages__Receiv__68487DD7" Association="Self.FK__Messages__Receiv__68487DD7">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Messages" EntitySet="Messages" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Messages__Sender__6754599E" Association="Self.FK__Messages__Sender__6754599E">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Messages" EntitySet="Messages" />
           </AssociationSet>
           <AssociationSet Name="FK__Notificat__UserI__71D1E811" Association="Self.FK__Notificat__UserI__71D1E811">
             <End Role="Users" EntitySet="Users" />
@@ -1156,17 +1066,6 @@
                 <ScalarProperty Name="RecordDate" ColumnName="RecordDate" />
                 <ScalarProperty Name="Diagnosis" ColumnName="Diagnosis" />
                 <ScalarProperty Name="Recommendations" ColumnName="Recommendations" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Messages">
-            <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Messages">
-              <MappingFragment StoreEntitySet="Messages">
-                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
-                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
-                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
-                <ScalarProperty Name="MessageText" ColumnName="MessageText" />
-                <ScalarProperty Name="SentAt" ColumnName="SentAt" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

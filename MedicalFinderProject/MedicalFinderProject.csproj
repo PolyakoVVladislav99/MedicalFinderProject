@@ -112,9 +112,6 @@
     <Compile Include="dbModel\MedicalRecords.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="dbModel\Messages.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
     <Compile Include="dbModel\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -149,6 +146,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="DoctorViewModel.cs" />
+    <Compile Include="NotificationViewModel.cs" />
     <Compile Include="RelayCommand.cs" />
     <Compile Include="RelayCommandGeneric.cs" />
     <Compile Include="ServiceViewModel.cs" />

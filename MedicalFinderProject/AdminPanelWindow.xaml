@@ -9,11 +9,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        
+
         <TextBlock Text="Админ-панель" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
 
         <TabControl Grid.Row="1" Margin="0,40,0,0">
-            
+
             <TabItem Header="Добавить врача">
                 <StackPanel Margin="20">
                     <TextBlock Text="Фамилия" />
@@ -34,11 +34,11 @@
                     <TextBlock Text="Клиника" Margin="0,10,0,0"/>
                     <ComboBox x:Name="ClinicComboBox" />
 
-                    <Button Content="Добавить врача" Click="AddDoctor_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left"/>
+                    <Button Content="Добавить врача" Click="AddDoctor_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left" Style="{DynamicResource PrimaryButton}"/>
                 </StackPanel>
             </TabItem>
 
-            
+
             <TabItem Header="Добавить клинику">
                 <StackPanel Margin="20">
                     <TextBlock Text="Название клиники" />
@@ -53,11 +53,11 @@
                     <TextBlock Text="Телефон" Margin="0,10,0,0"/>
                     <TextBox x:Name="ClinicPhoneTextBox"/>
 
-                    <Button Content="Добавить клинику" Click="AddClinic_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left"/>
+                    <Button Content="Добавить клинику" Click="AddClinic_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left" Style="{DynamicResource PrimaryButton}"/>
                 </StackPanel>
             </TabItem>
 
-            
+
             <TabItem Header="Добавить пользователя">
                 <StackPanel Margin="20">
                     <TextBlock Text="ФИО" />
@@ -74,7 +74,7 @@
 
                     <CheckBox x:Name="IsAdminCheckBox" Content="Назначить админом" Margin="0,10,0,0"/>
 
-                    <Button Content="Добавить пользователя" Click="AddUser_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left"/>
+                    <Button Content="Добавить пользователя" Click="AddUser_Click" Margin="0,20,0,0" Width="200" HorizontalAlignment="Left" Style="{StaticResource PrimaryButton}"/>
                 </StackPanel>
             </TabItem>
             <TabItem Header="Назначения пользователей">
@@ -120,6 +120,7 @@
                 </Grid>
             </TabItem>
         </TabControl>
-        <Button Content="exit" HorizontalAlignment="Left" Margin="644,10,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+        <Button Content="Выход" HorizontalAlignment="Left" Margin="10,4,0,0" VerticalAlignment="Top" Click="ExitButton_Click" Style="{StaticResource PrimaryButton}"/>
+        <Button Content="На главную" HorizontalAlignment="Left" Margin="119,0,0,0" VerticalAlignment="Center" Click="OnManePage_Click" Style="{StaticResource PrimaryButton}"/>
     </Grid>
 </Window>

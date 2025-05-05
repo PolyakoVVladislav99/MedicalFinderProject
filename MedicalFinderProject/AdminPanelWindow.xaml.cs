@@ -201,20 +201,6 @@ namespace MedicalFinderProject
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SessionManager.CurrentUser = null;
-
-            
-            App.MainAppWindow.Show();
-
-            
-            App.MainAppWindow.MainFrame.Navigate(new LoginPage());
-
-            
-            this.Close();
-
-        }
         private void LoadActivityLogs()
         {
             using (var context = new MedicalSpecialistServiceEntities3())
@@ -258,6 +244,20 @@ namespace MedicalFinderProject
                     ActivityLogDataGrid.ItemsSource = filteredLogs;
                 }
             }
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            SessionManager.CurrentUser = null;
+
+
+            App.MainAppWindow.Show();
+
+
+            App.MainAppWindow.MainFrame.Navigate(new LoginPage());
+
+
+            this.Close();
         }
     }
 }

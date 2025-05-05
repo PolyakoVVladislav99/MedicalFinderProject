@@ -22,8 +22,6 @@ namespace MedicalFinderProject.dbModel
             this.Documents = new HashSet<Documents>();
             this.Favorites = new HashSet<Favorites>();
             this.MedicalCards = new HashSet<MedicalCards>();
-            this.Messages = new HashSet<Messages>();
-            this.Messages1 = new HashSet<Messages>();
             this.Notifications = new HashSet<Notifications>();
         }
     
@@ -46,10 +44,6 @@ namespace MedicalFinderProject.dbModel
         public virtual ICollection<Favorites> Favorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MedicalCards> MedicalCards { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Messages> Messages { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Messages> Messages1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Notifications> Notifications { get; set; }
         public virtual Roles Roles { get; set; }

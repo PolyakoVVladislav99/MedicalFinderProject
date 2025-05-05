@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using MedicalFinderProject.dbModel;
 using Microsoft.Win32;
 using System.IO;
+using System.Collections.ObjectModel;
 
 
 namespace MedicalFinderProject.Views
@@ -24,15 +25,18 @@ namespace MedicalFinderProject.Views
     /// </summary>
     public partial class Profile : Page
     {
+        public ObservableCollection<NotificationViewModel> Notifications { get; set; }
         public Profile()
         {
             InitializeComponent();
             NameTextBlock.Text = $"{SessionManager.CurrentUser.FullName}";
+            int userId = SessionManager.CurrentUser.UserID;
+            LoadNotifications();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ForgotPassButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new ForgotPasswordPage());
+            NavigationService.Navigate(new ForgotPasswordPage());
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
@@ -64,7 +68,6 @@ namespace MedicalFinderProject.Views
                     }
                 }
 
-                
                 DisplayProfilePicture(imageBytes);
             }
         }
@@ -129,6 +132,36 @@ namespace MedicalFinderProject.Views
                 MedicalCardPage medicalCardPage = new MedicalCardPage();
                 NavigationService.Navigate(medicalCardPage);
             
+        }
+        private void LoadNotifications()
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                int userId = SessionManager.CurrentUser.UserID;
+                var notifications = context.Notifications
+                    .Where(n => n.UserID == userId)
+                    .OrderByDescending(n => n.SentAt)
+                    .Select(n => new NotificationViewModel
+                    {
+                        Message = n.Message,
+                        SentAt = n.SentAt ?? DateTime.MinValue,
+                        IsRead = n.IsRead ?? false
+                    })
+                    .ToList();
+
+                if (notifications.Count == 0)
+                {
+                    NotificationsListView.ItemsSource = null;
+                }
+                else
+                {
+                    NotificationsListView.ItemsSource = notifications;
+                }
+            }
+        }
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }

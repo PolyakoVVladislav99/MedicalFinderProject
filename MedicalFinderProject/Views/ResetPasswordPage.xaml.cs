@@ -54,6 +54,7 @@ namespace MedicalFinderProject.Views
                 context.SaveChanges();
 
                 LogUserAction(user.UserID, "Сброс пароля");
+                AddNotification(user.UserID, "Пароль изменен");
                 MessageBox.Show("Пароль успешно сброшен!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 NavigationService.Navigate(new LoginPage());
             }
@@ -79,6 +80,22 @@ namespace MedicalFinderProject.Views
                     LogDate = DateTime.Now
                 };
                 context.ActivityLogs.Add(log);
+                context.SaveChanges();
+            }
+        }
+        public void AddNotification(int userId, string message)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var notification = new Notifications
+                {
+                    UserID = userId,
+                    Message = message,
+                    IsRead = false,
+                    SentAt = DateTime.Now
+                };
+
+                context.Notifications.Add(notification);
                 context.SaveChanges();
             }
         }

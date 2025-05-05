@@ -14,7 +14,6 @@
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Favorites" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.MedicalCards" Width="1.5" PointX="5.25" PointY="16.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.MedicalRecords" Width="1.5" PointX="7.5" PointY="16.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Messages" Width="1.5" PointX="5.25" PointY="19.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Notifications" Width="1.5" PointX="5.25" PointY="22.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Reviews" Width="1.5" PointX="5.25" PointY="26.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Roles" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
@@ -33,8 +32,6 @@
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Favorites__UserI__6C190EBB" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__MedicalCa__UserI__49C3F6B7" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__MedicalRe__CardI__4D94879B" ManuallyRouted="false" />
-        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Messages__Receiv__68487DD7" ManuallyRouted="false" />
-        <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Messages__Sender__6754599E" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Notificat__UserI__71D1E811" ManuallyRouted="false" />
         <AssociationConnector Association="MedicalSpecialistServiceModel.FK__Users__RoleID__3B75D760" ManuallyRouted="false" />
         <EntityTypeShape EntityType="MedicalSpecialistServiceModel.Services" Width="1.5" PointX="5.25" PointY="30" />

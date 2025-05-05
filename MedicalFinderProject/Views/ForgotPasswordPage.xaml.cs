@@ -22,6 +22,7 @@ namespace MedicalFinderProject.Views
     /// </summary>
     public partial class ForgotPasswordPage : Page
     {
+        
         public ForgotPasswordPage()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace MedicalFinderProject.Views
         {
             string email = EmailBox.Text.Trim();
 
-            using (var context = new MedicalSpecialistServiceEntities3())   
+            using (var context = new MedicalSpecialistServiceEntities3())
             {
                 var user = context.Users.FirstOrDefault(u => u.Email == email);
                 if (string.IsNullOrWhiteSpace(email))
@@ -41,16 +42,11 @@ namespace MedicalFinderProject.Views
                 }
                 if (user == null)
                 {
-                    LogUserAction(Constants.SYSTEM_USER_ID, $"Попытка сброса пароля с неверным email: {email}");
+                    LogUserAction(SYSTEM_USER_ID, $"Попытка сброса пароля с неверным email: {email}");
                     MessageBox.Show("Такой email не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                
-
-                
                 string token = GenerateResetToken(user.UserID);
-
-                
                 user.ResetPasswordToken = token;
                 context.SaveChanges();
                 ResetTokenText.Text = $"{token}";
@@ -78,5 +74,11 @@ namespace MedicalFinderProject.Views
                 context.SaveChanges();
             }
         }
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.GoBack();
+        }
+
+
     }
 }

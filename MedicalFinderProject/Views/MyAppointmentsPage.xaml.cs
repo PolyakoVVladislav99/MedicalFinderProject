@@ -122,7 +122,7 @@ namespace MedicalFinderProject.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.Navigate(new MainPage());
+            NavigationService.GoBack();
         }
         private void UpdateAppointmentStatuses()
         {

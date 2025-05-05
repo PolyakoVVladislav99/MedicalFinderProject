@@ -4,14 +4,16 @@
       Title="Моя медицинская карта" Height="600" Width="800">
 
     <Grid>
+        <Button Content="← Назад" 
+    HorizontalAlignment="Left" 
+    VerticalAlignment="Top" 
+    Margin="20" 
+    Style="{StaticResource PrimaryButton}" 
+    Width="100" 
+    Click="BackButton_Click"/>
         <StackPanel>
-            
             <TextBlock Text="Моя медицинская карта" FontSize="24" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="20"/>
-
-            
             <TextBlock x:Name="CreatedAtTextBlock" FontSize="16" Foreground="#2C3E50" Margin="10" HorizontalAlignment="Center"/>
-
-            
             <DataGrid x:Name="MedicalRecordsDataGrid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" AutoGenerateColumns="True" Margin="20"/>
         </StackPanel>
     </Grid>

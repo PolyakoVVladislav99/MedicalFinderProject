@@ -107,6 +107,7 @@ namespace MedicalFinderProject.Views
 
                     context.MedicalRecords.Add(medicalRecord);
                     context.SaveChanges();
+                    AddNotification(userId, "Добавлена запись в мед карт");
                 }
                 var savedAppointments = context.Appointments
                     .Where(a => newAppointmentIds.Contains(a.AppointmentID))
@@ -136,16 +137,13 @@ namespace MedicalFinderProject.Views
                     context.SaveChanges();
                     appointment.DocumentID = document.DocumentID;
                 }
-                
-
                 context.SaveChanges(); 
-
-                
             }
 
             Cart.Clear();
             LogUserAction(userId, "Успешная оплата");
             MessageBox.Show("Оплата прошла успешно!");
+            AddNotification(userId, "Оплата прошла успешно! Добавлен чек");
 
             NavigationService.Navigate(new MyAppointmentsPage());
 
@@ -191,7 +189,6 @@ namespace MedicalFinderProject.Views
                 doc.Add(new iTextSharp.text.Paragraph($"Итого: {services.Sum(x => x.Price)} руб.", font));
                 doc.Add(new iTextSharp.text.Paragraph(" ", font));
 
-                
                 string qrContent = "https://youtu.be/dQw4w9WgXcQ"; 
 
                 var qrWriter = new ZXing.BarcodeWriter
@@ -220,8 +217,6 @@ namespace MedicalFinderProject.Views
 
             return path;
         }
-
-        
         private void Cart_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             UpdatePayButtonVisibility();
@@ -241,6 +236,22 @@ namespace MedicalFinderProject.Views
                     LogDate = DateTime.Now
                 };
                 context.ActivityLogs.Add(log);
+                context.SaveChanges();
+            }
+        }
+        public void AddNotification(int userId, string message)
+        {
+            using (var context = new MedicalSpecialistServiceEntities3())
+            {
+                var notification = new Notifications
+                {
+                    UserID = userId,
+                    Message = message,
+                    IsRead = false,
+                    SentAt = DateTime.Now
+                };
+
+                context.Notifications.Add(notification);
                 context.SaveChanges();
             }
         }

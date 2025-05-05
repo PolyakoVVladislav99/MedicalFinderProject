@@ -34,7 +34,6 @@ namespace MedicalFinderProject.dbModel
         public virtual DbSet<Favorites> Favorites { get; set; }
         public virtual DbSet<MedicalCards> MedicalCards { get; set; }
         public virtual DbSet<MedicalRecords> MedicalRecords { get; set; }
-        public virtual DbSet<Messages> Messages { get; set; }
         public virtual DbSet<Notifications> Notifications { get; set; }
         public virtual DbSet<Reviews> Reviews { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }

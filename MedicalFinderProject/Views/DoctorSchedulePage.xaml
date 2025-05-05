@@ -4,7 +4,13 @@
         Title="Расписание врачей" Height="450" Width="800">
 
     <Grid>
-        
+        <Button Content="← Назад" 
+    HorizontalAlignment="Left" 
+    VerticalAlignment="Top" 
+    Margin="-133,-232,0,0" 
+    Style="{StaticResource PrimaryButton}" 
+    Width="100" 
+    Click="BackButton_Click"/>
         <TextBlock Text="Расписание врачей" FontSize="24" FontWeight="Bold" 
                    Foreground="#2C3E50" HorizontalAlignment="Center" Margin="20,10,20,10"/>
 
