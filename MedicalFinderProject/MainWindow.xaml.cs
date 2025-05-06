@@ -30,8 +30,31 @@ namespace MedicalFinderProject
             InitializeComponent();
             MainFrame.Navigate(new RegisterPage());
             App.MainAppWindow = this;
+            MainFrame.Navigated += MainFrame_Navigated;
+
         }
-        
-        
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Вы действительно хотите выйти?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                SessionManager.CurrentUser = null;
+                MainFrame.Navigate(new Views.LoginPage());
+            }
+        }
+        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            var hiddenPages = new List<Type>
+    {
+        typeof(LoginPage),
+        typeof(RegisterPage),
+        typeof(ResetPasswordPage),
+        typeof(ForgotPasswordPage),
+    };
+
+            LogoutButton.Visibility = hiddenPages.Contains(e.Content.GetType())
+                ? Visibility.Collapsed
+                : Visibility.Visible;
+        }
+
     }
 }
