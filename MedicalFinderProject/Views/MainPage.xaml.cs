@@ -150,6 +150,12 @@ namespace MedicalFinderProject.Views
         {
             NavigationService?.Navigate(new Profile());
         }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            SessionManager.CurrentUser = null;
+            NavigationService?.Navigate(new LoginPage());
+        }
     }
 
 

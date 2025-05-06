@@ -4,6 +4,7 @@
       Background="#F2F4F8" Height="703" Width="1059">
 
     <Grid Background="#F2F4F8" Margin="0,57,0,0" HorizontalAlignment="Center" VerticalAlignment="Top">
+        
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="13*"/>
             <ColumnDefinition Width="1007*"/>
@@ -57,6 +58,7 @@
             </ListView.View>
         </ListView>
         <Button Grid.Column="1" Content="Профиль" HorizontalAlignment="Left" Margin="41,37,0,0" VerticalAlignment="Top" Click="Button_Click" Style="{StaticResource PrimaryButton}"/>
+        <Button Grid.Column="1" Content="Выйти" HorizontalAlignment="Left" Margin="880,37,0,0" VerticalAlignment="Top" Click="ExitButton_Click" Style="{StaticResource PrimaryButton}" />
 
     </Grid>
 
