@@ -24,7 +24,7 @@ namespace MedicalFinderProject
     /// </summary>
     public partial class AdminPanelWindow : Window
     {
-        private MedicalSpecialistServiceEntities3 db = new MedicalSpecialistServiceEntities3();
+        private MedicalSpecialistServiceEntities4 db = new MedicalSpecialistServiceEntities4();
         public AdminPanelWindow()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace MedicalFinderProject
         }
         private void LoadUserList()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var users = context.Users
                     .Where(u => u.RoleID == 2)
@@ -46,7 +46,7 @@ namespace MedicalFinderProject
         }
         private void LoadComboBoxes()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 SpecializationComboBox.ItemsSource = context.Specializations.ToList();
                 SpecializationComboBox.DisplayMemberPath = "Name";
@@ -74,7 +74,7 @@ namespace MedicalFinderProject
                 return;
             }
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var doctor = new Doctors
                 {
@@ -107,7 +107,7 @@ namespace MedicalFinderProject
                 return;
             }
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var clinic = new Clinics
                 {
@@ -140,7 +140,7 @@ namespace MedicalFinderProject
                 return;
             }
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 if (context.Users.Any(u => u.Email == email))
                 {
@@ -180,7 +180,7 @@ namespace MedicalFinderProject
             Button btn = sender as Button;
             int userId = (int)btn.Tag;
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var user = context.Users.FirstOrDefault(u => u.UserID == userId);
                 if (user != null)
@@ -203,7 +203,7 @@ namespace MedicalFinderProject
 
         private void LoadActivityLogs()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 
                 var users = context.Users.Select(u => new { u.UserID, u.FullName }).ToList();
@@ -230,7 +230,7 @@ namespace MedicalFinderProject
             {
                 int selectedUserId = (int)UserComboBox.SelectedValue;
 
-                using (var context = new MedicalSpecialistServiceEntities3())
+                using (var context = new MedicalSpecialistServiceEntities4())
                 {
                     var filteredLogs = context.ActivityLogs
                                               .Where(log => log.UserID == selectedUserId)
@@ -255,6 +255,18 @@ namespace MedicalFinderProject
 
 
             App.MainAppWindow.MainFrame.Navigate(new LoginPage());
+
+
+            this.Close();
+        }
+
+        private void OnManePage_Click(object sender, RoutedEventArgs e)
+        {
+             
+            App.MainAppWindow.Show();
+
+
+            App.MainAppWindow.MainFrame.Navigate(new MainPage());
 
 
             this.Close();

@@ -7,15 +7,35 @@
         <TextBlock Text="Корзина" FontSize="24" FontWeight="Bold"
                Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,20,0,0"/>
 
-        <ListView x:Name="CartListView" ItemsSource ="{Binding Cart}" Margin="40,80,40,100">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Название" DisplayMemberBinding="{Binding Name}" Width="300"/>
-                    <GridViewColumn Header="Описание" DisplayMemberBinding="{Binding Description}" Width="400"/>
-                    <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Price}" Width="150"/>
-                    <GridViewColumn Header="Дата проведения услуги" DisplayMemberBinding="{Binding SelectedDate, StringFormat=dd.MM.yyyy}" Width="150"/>
-                </GridView>
-            </ListView.View>
+        <ListView x:Name="CartListView" ItemsSource="{Binding Cart}" Margin="40,80,40,100">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="0,0,0,1" BorderBrush="LightGray" Padding="10">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="400"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="150"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Description}" Grid.Column="1" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Price}" Grid.Column="2" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding SelectedDate, StringFormat=dd.MM.yyyy}" Grid.Column="3" VerticalAlignment="Center"/>
+
+                            <Button Content="Удалить"
+                            Grid.Column="4"
+                            Margin="10,0,0,0"
+                            Width="80"
+                            Tag="{Binding}"
+                            Style="{StaticResource PrimaryButton}"
+                            Click="RemoveItemButton_Click"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
 
         <TextBlock x:Name="TotalTextBlock" FontSize="18" FontWeight="Bold"

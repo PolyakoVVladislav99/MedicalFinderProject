@@ -18,6 +18,7 @@ namespace MedicalFinderProject.dbModel
         public Services()
         {
             this.Appointments = new HashSet<Appointments>();
+            this.Favorites = new HashSet<Favorites>();
         }
     
         public int ServiceID { get; set; }
@@ -26,8 +27,10 @@ namespace MedicalFinderProject.dbModel
         public string Description { get; set; }
         public decimal Price { get; set; }
     
-        public virtual Doctors Doctors { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Appointments> Appointments { get; set; }
+        public virtual Doctors Doctors { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Favorites> Favorites { get; set; }
     }
 }

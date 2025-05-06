@@ -36,7 +36,7 @@ namespace MedicalFinderProject.Views
 
         private void LoadCities()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 cities = context.Clinics.Select(c => c.City).Distinct().ToList();
                 CityComboBox.ItemsSource = cities;
@@ -45,7 +45,7 @@ namespace MedicalFinderProject.Views
 
         private void LoadSpecializations()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 specializations = context.Specializations.Select(s => s.Name).Distinct().ToList();
                 SpecializationComboBox.ItemsSource = specializations;
@@ -73,7 +73,7 @@ namespace MedicalFinderProject.Views
             string selectedCity = CityComboBox.Text;
             string selectedSpecialization = SpecializationComboBox.Text;
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var filteredDoctors = (from d in context.Doctors
                                        join c in context.Clinics on d.ClinicID equals c.ClinicID
@@ -114,7 +114,7 @@ namespace MedicalFinderProject.Views
             DoctorsList.Visibility = Visibility.Visible;
             ShowAllButton.Visibility = Visibility.Collapsed;
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var allDoctors = (from d in context.Doctors
                                   join c in context.Clinics on d.ClinicID equals c.ClinicID

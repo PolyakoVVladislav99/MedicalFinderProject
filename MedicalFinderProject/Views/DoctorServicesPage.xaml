@@ -8,7 +8,7 @@
                Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,10,0,14"/>
 
         <ListView x:Name="ServicesList" Width="900" Margin="40,70,0,60" HorizontalAlignment="Left"
-              ItemsSource="{Binding Services}">
+          ItemsSource="{Binding Services}">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Название" Width="250">
@@ -35,21 +35,29 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <GridViewColumn Header=" " Width="150">
+                    <GridViewColumn Header=" " Width="200">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="В корзину"
-                                    Width="130" Height="30"
-                                    HorizontalAlignment="Right"
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="В корзину"
+                                    Width="90" Height="30"
                                     Command="{Binding DataContext.AddToCartCommand, RelativeSource={RelativeSource AncestorType=Page}}"
-                                    CommandParameter="{Binding}" Style="{StaticResource PrimaryButton}"/>
+                                    CommandParameter="{Binding}" 
+                                    Style="{StaticResource PrimaryButton}"/>
+
+                                    <Button Content="★"
+                                    Width="30" Height="30"
+                                    Click="AddToFavorites_Click"
+                                    CommandParameter="{Binding}" 
+                                    ToolTip="Добавить в избранное"
+                                    Style="{StaticResource PrimaryButton}"/>
+                                </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>
-
         <TextBlock x:Name="NoServicesText" Text="Услуги для данного врача не найдены."
                Visibility="Collapsed"
                Foreground="Gray" FontStyle="Italic" FontSize="16"

@@ -38,7 +38,7 @@ namespace MedicalFinderProject.Views
             }
 
             
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var medicalCard = context.MedicalCards
                                         .FirstOrDefault(m => m.UserID == user.UserID);

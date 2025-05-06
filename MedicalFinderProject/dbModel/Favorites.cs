@@ -16,10 +16,10 @@ namespace MedicalFinderProject.dbModel
     {
         public int FavoriteID { get; set; }
         public int UserID { get; set; }
-        public int DoctorID { get; set; }
+        public int ServiceID { get; set; }
         public Nullable<System.DateTime> AddedAt { get; set; }
     
-        public virtual Doctors Doctors { get; set; }
+        public virtual Services Services { get; set; }
         public virtual Users Users { get; set; }
     }
 }

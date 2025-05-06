@@ -13,10 +13,10 @@ namespace MedicalFinderProject.dbModel
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class MedicalSpecialistServiceEntities3 : DbContext
+    public partial class MedicalSpecialistServiceEntities4 : DbContext
     {
-        public MedicalSpecialistServiceEntities3()
-            : base("name=MedicalSpecialistServiceEntities3")
+        public MedicalSpecialistServiceEntities4()
+            : base("name=MedicalSpecialistServiceEntities4")
         {
         }
     
@@ -37,8 +37,8 @@ namespace MedicalFinderProject.dbModel
         public virtual DbSet<Notifications> Notifications { get; set; }
         public virtual DbSet<Reviews> Reviews { get; set; }
         public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<Services> Services { get; set; }
         public virtual DbSet<Specializations> Specializations { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<Services> Services { get; set; }
     }
 }

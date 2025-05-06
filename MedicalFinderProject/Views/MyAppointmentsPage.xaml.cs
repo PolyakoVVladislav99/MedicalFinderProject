@@ -38,7 +38,7 @@ namespace MedicalFinderProject.Views
 
         private void LoadAppointments()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 int userId = SessionManager.CurrentUser.UserID;
 
@@ -98,7 +98,7 @@ namespace MedicalFinderProject.Views
         {
             if (sender is Button button && button.DataContext is AppointmentViewModel appointment && appointment.DocumentID.HasValue)
             {
-                using (var context = new MedicalSpecialistServiceEntities3())
+                using (var context = new MedicalSpecialistServiceEntities4())
                 {
                     var doc = context.Documents.Find(appointment.DocumentID.Value);
                     if (doc != null && doc.FileData != null)
@@ -128,7 +128,7 @@ namespace MedicalFinderProject.Views
         {
             int userId = SessionManager.CurrentUser.UserID;
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var now = DateTime.Now;
 
@@ -153,7 +153,7 @@ namespace MedicalFinderProject.Views
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    using (var context = new MedicalSpecialistServiceEntities3())
+                    using (var context = new MedicalSpecialistServiceEntities4())
                     {
                         var appointment = context.Appointments.FirstOrDefault(a => a.AppointmentID == model.AppointmentID);
                         if (appointment != null && appointment.Status == "Ожидается")
@@ -172,7 +172,7 @@ namespace MedicalFinderProject.Views
         }
         public static void LogUserAction(int userId, string action)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var log = new ActivityLogs
                 {

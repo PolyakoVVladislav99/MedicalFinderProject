@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Хранилище MedicalSpecialistServiceModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Хранилище MedicalSpecialistServiceModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ActivityLogs">
           <Key>
             <PropertyRef Name="LogID" />
@@ -76,7 +76,7 @@
           </Key>
           <Property Name="FavoriteID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="DoctorID" Type="int" Nullable="false" />
+          <Property Name="ServiceID" Type="int" Nullable="false" />
           <Property Name="AddedAt" Type="datetime" />
         </EntityType>
         <EntityType Name="MedicalCards">
@@ -240,19 +240,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Favorites__Docto__6D0D32F4">
-          <End Role="Doctors" Type="Self.Doctors" Multiplicity="1" />
+        <Association Name="FK__Favorites__Servi__03F0984C">
+          <End Role="Services" Type="Self.Services" Multiplicity="1" />
           <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Doctors">
-              <PropertyRef Name="DoctorID" />
+            <Principal Role="Services">
+              <PropertyRef Name="ServiceID" />
             </Principal>
             <Dependent Role="Favorites">
-              <PropertyRef Name="DoctorID" />
+              <PropertyRef Name="ServiceID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Favorites__UserI__6C190EBB">
+        <Association Name="FK__Favorites__UserI__02FC7413">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
           <ReferentialConstraint>
@@ -418,11 +418,11 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Documents" EntitySet="Documents" />
           </AssociationSet>
-          <AssociationSet Name="FK__Favorites__Docto__6D0D32F4" Association="Self.FK__Favorites__Docto__6D0D32F4">
-            <End Role="Doctors" EntitySet="Doctors" />
+          <AssociationSet Name="FK__Favorites__Servi__03F0984C" Association="Self.FK__Favorites__Servi__03F0984C">
+            <End Role="Services" EntitySet="Services" />
             <End Role="Favorites" EntitySet="Favorites" />
           </AssociationSet>
-          <AssociationSet Name="FK__Favorites__UserI__6C190EBB" Association="Self.FK__Favorites__UserI__6C190EBB">
+          <AssociationSet Name="FK__Favorites__UserI__02FC7413" Association="Self.FK__Favorites__UserI__02FC7413">
             <End Role="Users" EntitySet="Users" />
             <End Role="Favorites" EntitySet="Favorites" />
           </AssociationSet>
@@ -463,7 +463,8 @@
             <End Role="Services" EntitySet="Services" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="MedicalSpecialistServiceModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -486,12 +487,12 @@
           <Property Name="UserID" Type="Int32" Nullable="false" />
           <Property Name="AppointmentDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ServiceID" Type="Int32" Nullable="false" />
+          <Property Name="DocumentID" Type="Int32" />
           <NavigationProperty Name="Doctors" Relationship="Self.FK__Appointme__Docto__5AEE82B9" FromRole="Appointments" ToRole="Doctors" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Appointme__UserI__5BE2A6F2" FromRole="Appointments" ToRole="Users" />
-          <Property Name="ServiceID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Services" Relationship="MedicalSpecialistServiceModel.FK_Appointment_Service" FromRole="Appointments" ToRole="Services" />
-          <Property Name="DocumentID" Type="Int32" />
-          <NavigationProperty Name="Documents" Relationship="MedicalSpecialistServiceModel.FK_Appointments_Documents" FromRole="Appointments" ToRole="Documents" />
+          <NavigationProperty Name="Services" Relationship="Self.FK_Appointment_Service" FromRole="Appointments" ToRole="Services" />
+          <NavigationProperty Name="Documents" Relationship="Self.FK_Appointments_Documents" FromRole="Appointments" ToRole="Documents" />
         </EntityType>
         <EntityType Name="Clinics">
           <Key>
@@ -520,10 +521,9 @@
           <NavigationProperty Name="Clinics" Relationship="Self.FK__Doctors__ClinicI__45F365D3" FromRole="Doctors" ToRole="Clinics" />
           <NavigationProperty Name="Specializations" Relationship="Self.FK__Doctors__Special__44FF419A" FromRole="Doctors" ToRole="Specializations" />
           <NavigationProperty Name="DoctorSchedules" Relationship="Self.FK__DoctorSch__Docto__5165187F" FromRole="Doctors" ToRole="DoctorSchedules" />
-          <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorites__Docto__6D0D32F4" FromRole="Doctors" ToRole="Favorites" />
           <NavigationProperty Name="MedicalRecords" Relationship="Self.FK__MedicalRe__Docto__4E88ABD4" FromRole="Doctors" ToRole="MedicalRecords" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK__Reviews__DoctorI__5629CD9C" FromRole="Doctors" ToRole="Reviews" />
-          <NavigationProperty Name="Services" Relationship="MedicalSpecialistServiceModel.FK_Services_Doctor" FromRole="Doctors" ToRole="Services" />
+          <NavigationProperty Name="Services" Relationship="Self.FK_Services_Doctor" FromRole="Doctors" ToRole="Services" />
         </EntityType>
         <EntityType Name="DoctorSchedules">
           <Key>
@@ -545,9 +545,9 @@
           <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UploadDate" Type="DateTime" Precision="3" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Documents__UserI__5FB337D6" FromRole="Documents" ToRole="Users" />
           <Property Name="FileData" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="Appointments" Relationship="MedicalSpecialistServiceModel.FK_Appointments_Documents" FromRole="Documents" ToRole="Appointments" />
+          <NavigationProperty Name="Appointments" Relationship="Self.FK_Appointments_Documents" FromRole="Documents" ToRole="Appointments" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Documents__UserI__5FB337D6" FromRole="Documents" ToRole="Users" />
         </EntityType>
         <EntityType Name="Favorites">
           <Key>
@@ -555,10 +555,10 @@
           </Key>
           <Property Name="FavoriteID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="DoctorID" Type="Int32" Nullable="false" />
+          <Property Name="ServiceID" Type="Int32" Nullable="false" />
           <Property Name="AddedAt" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Doctors" Relationship="Self.FK__Favorites__Docto__6D0D32F4" FromRole="Favorites" ToRole="Doctors" />
-          <NavigationProperty Name="Users" Relationship="Self.FK__Favorites__UserI__6C190EBB" FromRole="Favorites" ToRole="Users" />
+          <NavigationProperty Name="Services" Relationship="Self.FK__Favorites__Servi__03F0984C" FromRole="Favorites" ToRole="Services" />
+          <NavigationProperty Name="Users" Relationship="Self.FK__Favorites__UserI__02FC7413" FromRole="Favorites" ToRole="Users" />
         </EntityType>
         <EntityType Name="MedicalCards">
           <Key>
@@ -613,6 +613,19 @@
           <Property Name="RoleName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Users" Relationship="Self.FK__Users__RoleID__3B75D760" FromRole="Roles" ToRole="Users" />
         </EntityType>
+        <EntityType Name="Services">
+          <Key>
+            <PropertyRef Name="ServiceID" />
+          </Key>
+          <Property Name="ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DoctorID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+          <NavigationProperty Name="Appointments" Relationship="Self.FK_Appointment_Service" FromRole="Services" ToRole="Appointments" />
+          <NavigationProperty Name="Doctors" Relationship="Self.FK_Services_Doctor" FromRole="Services" ToRole="Doctors" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorites__Servi__03F0984C" FromRole="Services" ToRole="Favorites" />
+        </EntityType>
         <EntityType Name="Specializations">
           <Key>
             <PropertyRef Name="SpecializationID" />
@@ -633,14 +646,14 @@
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="RoleID" Type="Int32" Nullable="false" />
           <Property Name="ResetPasswordToken" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ProfilePicture" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="ActivityLogs" Relationship="Self.FK__ActivityL__UserI__6383C8BA" FromRole="Users" ToRole="ActivityLogs" />
           <NavigationProperty Name="Appointments" Relationship="Self.FK__Appointme__UserI__5BE2A6F2" FromRole="Users" ToRole="Appointments" />
           <NavigationProperty Name="Documents" Relationship="Self.FK__Documents__UserI__5FB337D6" FromRole="Users" ToRole="Documents" />
-          <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorites__UserI__6C190EBB" FromRole="Users" ToRole="Favorites" />
+          <NavigationProperty Name="Favorites" Relationship="Self.FK__Favorites__UserI__02FC7413" FromRole="Users" ToRole="Favorites" />
           <NavigationProperty Name="MedicalCards" Relationship="Self.FK__MedicalCa__UserI__49C3F6B7" FromRole="Users" ToRole="MedicalCards" />
           <NavigationProperty Name="Notifications" Relationship="Self.FK__Notificat__UserI__71D1E811" FromRole="Users" ToRole="Notifications" />
           <NavigationProperty Name="Roles" Relationship="Self.FK__Users__RoleID__3B75D760" FromRole="Users" ToRole="Roles" />
-          <Property Name="ProfilePicture" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK__ActivityL__UserI__6383C8BA">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
@@ -675,6 +688,30 @@
             </Principal>
             <Dependent Role="Appointments">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Appointment_Service">
+          <End Role="Services" Type="Self.Services" Multiplicity="1" />
+          <End Role="Appointments" Type="Self.Appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ServiceID" />
+            </Principal>
+            <Dependent Role="Appointments">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Appointments_Documents">
+          <End Role="Documents" Type="Self.Documents" Multiplicity="0..1" />
+          <End Role="Appointments" Type="Self.Appointments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Documents">
+              <PropertyRef Name="DocumentID" />
+            </Principal>
+            <Dependent Role="Appointments">
+              <PropertyRef Name="DocumentID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -714,18 +751,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Favorites__Docto__6D0D32F4">
-          <End Role="Doctors" Type="Self.Doctors" Multiplicity="1" />
-          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctors">
-              <PropertyRef Name="DoctorID" />
-            </Principal>
-            <Dependent Role="Favorites">
-              <PropertyRef Name="DoctorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK__MedicalRe__Docto__4E88ABD4">
           <End Role="Doctors" Type="Self.Doctors" Multiplicity="1" />
           <End Role="MedicalRecords" Type="Self.MedicalRecords" Multiplicity="*" />
@@ -750,6 +775,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Services_Doctor">
+          <End Role="Doctors" Type="Self.Doctors" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Services" Type="Self.Services" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Doctors">
+              <PropertyRef Name="DoctorID" />
+            </Principal>
+            <Dependent Role="Services">
+              <PropertyRef Name="DoctorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__Documents__UserI__5FB337D6">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Documents" Type="Self.Documents" Multiplicity="*" />
@@ -762,7 +801,19 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Favorites__UserI__6C190EBB">
+        <Association Name="FK__Favorites__Servi__03F0984C">
+          <End Role="Services" Type="Self.Services" Multiplicity="1" />
+          <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Services">
+              <PropertyRef Name="ServiceID" />
+            </Principal>
+            <Dependent Role="Favorites">
+              <PropertyRef Name="ServiceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Favorites__UserI__02FC7413">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Favorites" Type="Self.Favorites" Multiplicity="*" />
           <ReferentialConstraint>
@@ -822,7 +873,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="MedicalSpecialistServiceEntities3" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="MedicalSpecialistServiceEntities4" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ActivityLogs" EntityType="Self.ActivityLogs" />
           <EntitySet Name="Appointments" EntityType="Self.Appointments" />
           <EntitySet Name="Clinics" EntityType="Self.Clinics" />
@@ -835,6 +886,7 @@
           <EntitySet Name="Notifications" EntityType="Self.Notifications" />
           <EntitySet Name="Reviews" EntityType="Self.Reviews" />
           <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Services" EntityType="Self.Services" />
           <EntitySet Name="Specializations" EntityType="Self.Specializations" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <AssociationSet Name="FK__ActivityL__UserI__6383C8BA" Association="Self.FK__ActivityL__UserI__6383C8BA">
@@ -849,6 +901,14 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="Appointments" EntitySet="Appointments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Appointment_Service" Association="Self.FK_Appointment_Service">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Appointments" EntitySet="Appointments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Appointments_Documents" Association="Self.FK_Appointments_Documents">
+            <End Role="Documents" EntitySet="Documents" />
+            <End Role="Appointments" EntitySet="Appointments" />
+          </AssociationSet>
           <AssociationSet Name="FK__Doctors__ClinicI__45F365D3" Association="Self.FK__Doctors__ClinicI__45F365D3">
             <End Role="Clinics" EntitySet="Clinics" />
             <End Role="Doctors" EntitySet="Doctors" />
@@ -861,10 +921,6 @@
             <End Role="Doctors" EntitySet="Doctors" />
             <End Role="DoctorSchedules" EntitySet="DoctorSchedules" />
           </AssociationSet>
-          <AssociationSet Name="FK__Favorites__Docto__6D0D32F4" Association="Self.FK__Favorites__Docto__6D0D32F4">
-            <End Role="Doctors" EntitySet="Doctors" />
-            <End Role="Favorites" EntitySet="Favorites" />
-          </AssociationSet>
           <AssociationSet Name="FK__MedicalRe__Docto__4E88ABD4" Association="Self.FK__MedicalRe__Docto__4E88ABD4">
             <End Role="Doctors" EntitySet="Doctors" />
             <End Role="MedicalRecords" EntitySet="MedicalRecords" />
@@ -873,11 +929,19 @@
             <End Role="Doctors" EntitySet="Doctors" />
             <End Role="Reviews" EntitySet="Reviews" />
           </AssociationSet>
+          <AssociationSet Name="FK_Services_Doctor" Association="Self.FK_Services_Doctor">
+            <End Role="Doctors" EntitySet="Doctors" />
+            <End Role="Services" EntitySet="Services" />
+          </AssociationSet>
           <AssociationSet Name="FK__Documents__UserI__5FB337D6" Association="Self.FK__Documents__UserI__5FB337D6">
             <End Role="Users" EntitySet="Users" />
             <End Role="Documents" EntitySet="Documents" />
           </AssociationSet>
-          <AssociationSet Name="FK__Favorites__UserI__6C190EBB" Association="Self.FK__Favorites__UserI__6C190EBB">
+          <AssociationSet Name="FK__Favorites__Servi__03F0984C" Association="Self.FK__Favorites__Servi__03F0984C">
+            <End Role="Services" EntitySet="Services" />
+            <End Role="Favorites" EntitySet="Favorites" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Favorites__UserI__02FC7413" Association="Self.FK__Favorites__UserI__02FC7413">
             <End Role="Users" EntitySet="Users" />
             <End Role="Favorites" EntitySet="Favorites" />
           </AssociationSet>
@@ -897,76 +961,13 @@
             <End Role="Roles" EntitySet="Roles" />
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
-          <EntitySet Name="Services" EntityType="MedicalSpecialistServiceModel.Services" />
-          <AssociationSet Name="FK_Services_Doctor" Association="MedicalSpecialistServiceModel.FK_Services_Doctor">
-            <End Role="Doctors" EntitySet="Doctors" />
-            <End Role="Services" EntitySet="Services" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Appointment_Service" Association="MedicalSpecialistServiceModel.FK_Appointment_Service">
-            <End Role="Services" EntitySet="Services" />
-            <End Role="Appointments" EntitySet="Appointments" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Appointments_Documents" Association="MedicalSpecialistServiceModel.FK_Appointments_Documents">
-            <End Role="Documents" EntitySet="Documents" />
-            <End Role="Appointments" EntitySet="Appointments" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="Services">
-          <Key>
-            <PropertyRef Name="ServiceID" />
-          </Key>
-          <Property Name="ServiceID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="DoctorID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="Price" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
-          <NavigationProperty Name="Doctors" Relationship="MedicalSpecialistServiceModel.FK_Services_Doctor" FromRole="Services" ToRole="Doctors" />
-          <NavigationProperty Name="Appointments" Relationship="MedicalSpecialistServiceModel.FK_Appointment_Service" FromRole="Services" ToRole="Appointments" />
-        </EntityType>
-        <Association Name="FK_Services_Doctor">
-          <End Type="MedicalSpecialistServiceModel.Doctors" Role="Doctors" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Type="MedicalSpecialistServiceModel.Services" Role="Services" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Doctors">
-              <PropertyRef Name="DoctorID" />
-            </Principal>
-            <Dependent Role="Services">
-              <PropertyRef Name="DoctorID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Appointment_Service">
-          <End Type="MedicalSpecialistServiceModel.Services" Role="Services" Multiplicity="1" />
-          <End Type="MedicalSpecialistServiceModel.Appointments" Role="Appointments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Services">
-              <PropertyRef Name="ServiceID" />
-            </Principal>
-            <Dependent Role="Appointments">
-              <PropertyRef Name="ServiceID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Appointments_Documents">
-          <End Type="MedicalSpecialistServiceModel.Documents" Role="Documents" Multiplicity="0..1" />
-          <End Type="MedicalSpecialistServiceModel.Appointments" Role="Appointments" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Documents">
-              <PropertyRef Name="DocumentID" />
-            </Principal>
-            <Dependent Role="Appointments">
-              <PropertyRef Name="DocumentID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище MedicalSpecialistServiceModelContainer" CdmEntityContainer="MedicalSpecialistServiceEntities3">
+        <EntityContainerMapping StorageEntityContainer="Хранилище MedicalSpecialistServiceModelContainer" CdmEntityContainer="MedicalSpecialistServiceEntities4">
           <EntitySetMapping Name="ActivityLogs">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.ActivityLogs">
               <MappingFragment StoreEntitySet="ActivityLogs">
@@ -980,13 +981,13 @@
           <EntitySetMapping Name="Appointments">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Appointments">
               <MappingFragment StoreEntitySet="Appointments">
-                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="AppointmentID" ColumnName="AppointmentID" />
                 <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="AppointmentDate" ColumnName="AppointmentDate" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1029,12 +1030,12 @@
           <EntitySetMapping Name="Documents">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Documents">
               <MappingFragment StoreEntitySet="Documents">
-                <ScalarProperty Name="FileData" ColumnName="FileData" />
                 <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="FileName" ColumnName="FileName" />
                 <ScalarProperty Name="UploadDate" ColumnName="UploadDate" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="FileData" ColumnName="FileData" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1043,7 +1044,7 @@
               <MappingFragment StoreEntitySet="Favorites">
                 <ScalarProperty Name="FavoriteID" ColumnName="FavoriteID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
                 <ScalarProperty Name="AddedAt" ColumnName="AddedAt" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1099,6 +1100,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Services">
+            <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Services">
+              <MappingFragment StoreEntitySet="Services">
+                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Specializations">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Specializations">
               <MappingFragment StoreEntitySet="Specializations">
@@ -1111,7 +1123,6 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Users">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -1119,17 +1130,7 @@
                 <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="RoleID" ColumnName="RoleID" />
                 <ScalarProperty Name="ResetPasswordToken" ColumnName="ResetPasswordToken" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Services">
-            <EntityTypeMapping TypeName="MedicalSpecialistServiceModel.Services">
-              <MappingFragment StoreEntitySet="Services">
-                <ScalarProperty Name="Price" ColumnName="Price" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DoctorID" ColumnName="DoctorID" />
-                <ScalarProperty Name="ServiceID" ColumnName="ServiceID" />
+                <ScalarProperty Name="ProfilePicture" ColumnName="ProfilePicture" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

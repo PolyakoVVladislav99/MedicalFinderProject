@@ -63,7 +63,7 @@ namespace MedicalFinderProject.Views
             int userId = SessionManager.CurrentUser.UserID;
             List<int> newAppointmentIds = new List<int>();
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 foreach (var service in Cart)
                 {
@@ -107,7 +107,7 @@ namespace MedicalFinderProject.Views
 
                     context.MedicalRecords.Add(medicalRecord);
                     context.SaveChanges();
-                    AddNotification(userId, "Добавлена запись в мед карт");
+                    AddNotification(userId, "Добавлена запись в мед карту");
                 }
                 var savedAppointments = context.Appointments
                     .Where(a => newAppointmentIds.Contains(a.AppointmentID))
@@ -227,7 +227,7 @@ namespace MedicalFinderProject.Views
         }
         public static void LogUserAction(int userId, string action)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var log = new ActivityLogs
                 {
@@ -241,7 +241,7 @@ namespace MedicalFinderProject.Views
         }
         public void AddNotification(int userId, string message)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var notification = new Notifications
                 {
@@ -253,6 +253,16 @@ namespace MedicalFinderProject.Views
 
                 context.Notifications.Add(notification);
                 context.SaveChanges();
+            }
+        }
+        private void RemoveItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is ServiceViewModel item)
+            {
+                Cart.Remove(item);
+                TotalTextBlock.Text = $" Итоговая сумма: {Cart.Sum(service => service.Price)}";
+
+
             }
         }
     }

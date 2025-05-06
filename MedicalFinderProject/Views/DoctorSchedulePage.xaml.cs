@@ -28,7 +28,7 @@ namespace MedicalFinderProject.Views
         }
         private void LoadDoctorSchedules()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var schedules = context.DoctorSchedules
                     .Join(context.Doctors, schedule => schedule.DoctorID, doctor => doctor.DoctorID,

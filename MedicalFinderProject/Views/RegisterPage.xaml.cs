@@ -24,7 +24,7 @@ namespace MedicalFinderProject.Views
     /// </summary>
     public partial class RegisterPage : Page
     {
-        MedicalSpecialistServiceEntities3 db = new MedicalSpecialistServiceEntities3();
+        MedicalSpecialistServiceEntities4 db = new MedicalSpecialistServiceEntities4();
         public RegisterPage()
         {
             InitializeComponent(); 
@@ -110,7 +110,7 @@ namespace MedicalFinderProject.Views
         }
         public static void LogUserAction(int userId, string action)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var log = new ActivityLogs
                 {

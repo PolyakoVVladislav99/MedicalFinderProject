@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MedicalFinderProject.dbModel;
+using static MedicalFinderProject.SessionManager;
 
 namespace MedicalFinderProject.Views
 {
@@ -22,7 +23,7 @@ namespace MedicalFinderProject.Views
     /// </summary>
     public partial class DoctorServicesPage : Page
     {
-        private DoctorViewModel doctor;
+        public DoctorViewModel doctor;
 
         public ObservableCollection<ServiceViewModel> DoctorServices { get; set; }
         public ObservableCollection<ServiceViewModel> Cart { get; set; }  
@@ -33,12 +34,16 @@ namespace MedicalFinderProject.Views
             this.doctor = doctor;
             Cart = new ObservableCollection<ServiceViewModel>();
             LoadDoctorServices();
-            this.DataContext = this;  
+            this.DataContext = this;
+            foreach (var item in ServicesList.Items)
+            {
+                Console.WriteLine(item?.GetType().FullName ?? "null");
+            }
         }
         private void LoadDoctorServices()
         {
             
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var services = context.Services
                     .Where(s => s.DoctorID == doctor.DoctorID)
@@ -102,21 +107,22 @@ namespace MedicalFinderProject.Views
                 Width = 60,
                 Margin = new Thickness(10),
                 HorizontalAlignment = HorizontalAlignment.Center,
-                
+
             };
             okButton.Click += (s, e) => dialogWindow.DialogResult = true;
             dialogPanel.Children.Add(okButton);
 
-            if (dialogWindow.ShowDialog() == true && datePicker.SelectedDate.HasValue)
+            bool? dialogResult = dialogWindow.ShowDialog();
+
+            if (dialogResult == true && datePicker.SelectedDate.HasValue)
             {
-                service.SelectedDate = datePicker.SelectedDate.Value; 
+                service.SelectedDate = datePicker.SelectedDate.Value;
                 Cart.Add(service);
                 MessageBox.Show($"Услуга '{service.Name}' добавлена в корзину на дату {service.SelectedDate:dd.MM.yyyy}.");
             }
-            if (service != null && !Cart.Contains(service))
+            else if (dialogResult == false)
             {
-                Cart.Add(service);
-                MessageBox.Show($"Услуга {service.Name} добавлена в корзину.");
+                
             }
         }
 
@@ -129,5 +135,41 @@ namespace MedicalFinderProject.Views
         {
             NavigationService.Navigate(new MainPage());
         }
+        private void AddToFavorites_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is ServiceViewModel selectedServiceVM)
+            {
+                using (var context = new MedicalSpecialistServiceEntities4())
+                {
+                    int currentUserId = SessionManager.CurrentUser.UserID;
+
+                    bool alreadyExists = context.Favorites
+                        .Any(f => f.UserID == currentUserId && f.ServiceID == selectedServiceVM.ServiceID);
+
+                    if (alreadyExists)
+                    {
+                        MessageBox.Show("Эта услуга уже в избранном.", "Избранное", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+
+                    var favorite = new Favorites
+                    {
+                        UserID = currentUserId,
+                        ServiceID = selectedServiceVM.ServiceID,
+                        AddedAt = DateTime.Now
+                    };
+
+                    context.Favorites.Add(favorite);
+                    context.SaveChanges();
+
+                    MessageBox.Show("Услуга добавлена в избранное!", "Избранное", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ошибка: не удалось определить услугу.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }

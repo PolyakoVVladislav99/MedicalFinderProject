@@ -24,7 +24,7 @@ namespace MedicalFinderProject
     /// </summary>
     public partial class MainWindow : Window
     {
-        MedicalSpecialistServiceEntities3 db = new MedicalSpecialistServiceEntities3();
+        MedicalSpecialistServiceEntities4 db = new MedicalSpecialistServiceEntities4();
         public MainWindow()
         {
             InitializeComponent();

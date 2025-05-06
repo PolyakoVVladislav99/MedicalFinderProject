@@ -27,8 +27,8 @@ namespace MedicalFinderProject.dbModel
         public string Description { get; set; }
         public byte[] FileData { get; set; }
     
-        public virtual Users Users { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Appointments> Appointments { get; set; }
+        public virtual Users Users { get; set; }
     }
 }

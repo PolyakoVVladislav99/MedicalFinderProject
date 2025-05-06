@@ -23,7 +23,7 @@ namespace MedicalFinderProject.Views
     /// </summary>
     public partial class LoginPage : Page
     {
-        MedicalSpecialistServiceEntities3 db = new MedicalSpecialistServiceEntities3();
+        MedicalSpecialistServiceEntities4 db = new MedicalSpecialistServiceEntities4();
         
         public LoginPage()
         {
@@ -44,7 +44,7 @@ namespace MedicalFinderProject.Views
 
             try
             {
-                using (var context = new MedicalSpecialistServiceEntities3())
+                using (var context = new MedicalSpecialistServiceEntities4())
                 {
                     var user = context.Users.FirstOrDefault(u => u.Email == email);
 
@@ -106,7 +106,7 @@ namespace MedicalFinderProject.Views
         
         private void LogUserAction(int userId, string action)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var log = new ActivityLogs
                 {
@@ -121,7 +121,7 @@ namespace MedicalFinderProject.Views
         }
         public void AddNotification(int userId, string message)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var notification = new Notifications
                 {

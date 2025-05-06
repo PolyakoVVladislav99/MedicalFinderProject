@@ -31,7 +31,7 @@ namespace MedicalFinderProject.Views
         {
             string email = EmailBox.Text.Trim();
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var user = context.Users.FirstOrDefault(u => u.Email == email);
                 if (string.IsNullOrWhiteSpace(email))
@@ -62,7 +62,7 @@ namespace MedicalFinderProject.Views
         }
         public static void LogUserAction(int userId, string action)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var log = new ActivityLogs
                 {

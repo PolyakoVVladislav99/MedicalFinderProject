@@ -38,7 +38,7 @@ namespace MedicalFinderProject.Views
                 return;
             }
 
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                
                 var user = context.Users.FirstOrDefault(u => u.ResetPasswordToken == token);
@@ -71,7 +71,7 @@ namespace MedicalFinderProject.Views
         }
         public static void LogUserAction(int userId, string action)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var log = new ActivityLogs
                 {
@@ -85,7 +85,7 @@ namespace MedicalFinderProject.Views
         }
         public void AddNotification(int userId, string message)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var notification = new Notifications
                 {

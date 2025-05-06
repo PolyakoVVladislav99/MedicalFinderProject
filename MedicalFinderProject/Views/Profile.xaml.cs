@@ -57,7 +57,7 @@ namespace MedicalFinderProject.Views
                 byte[] imageBytes = File.ReadAllBytes(filePath);
 
                 
-                using (var context = new MedicalSpecialistServiceEntities3())
+                using (var context = new MedicalSpecialistServiceEntities4())
                 {
                     var user = context.Users.FirstOrDefault(u => u.UserID == SessionManager.CurrentUser.UserID);
                     if (user != null)
@@ -89,7 +89,7 @@ namespace MedicalFinderProject.Views
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var user = context.Users.FirstOrDefault(u => u.UserID == SessionManager.CurrentUser.UserID);
                 if (user != null)
@@ -113,7 +113,7 @@ namespace MedicalFinderProject.Views
         }
         public static void LogUserAction(int userId, string action)
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
+            using (var context = new MedicalSpecialistServiceEntities4())
             {
                 var log = new ActivityLogs
                 {
@@ -135,8 +135,8 @@ namespace MedicalFinderProject.Views
         }
         private void LoadNotifications()
         {
-            using (var context = new MedicalSpecialistServiceEntities3())
-            {
+            using (var context = new MedicalSpecialistServiceEntities4())
+            {   
                 int userId = SessionManager.CurrentUser.UserID;
                 var notifications = context.Notifications
                     .Where(n => n.UserID == userId)

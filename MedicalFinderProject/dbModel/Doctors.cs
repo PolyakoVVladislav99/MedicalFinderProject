@@ -19,7 +19,6 @@ namespace MedicalFinderProject.dbModel
         {
             this.Appointments = new HashSet<Appointments>();
             this.DoctorSchedules = new HashSet<DoctorSchedules>();
-            this.Favorites = new HashSet<Favorites>();
             this.MedicalRecords = new HashSet<MedicalRecords>();
             this.Reviews = new HashSet<Reviews>();
             this.Services = new HashSet<Services>();
@@ -40,8 +39,6 @@ namespace MedicalFinderProject.dbModel
         public virtual Specializations Specializations { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DoctorSchedules> DoctorSchedules { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Favorites> Favorites { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MedicalRecords> MedicalRecords { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
