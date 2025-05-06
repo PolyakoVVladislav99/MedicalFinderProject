@@ -5,12 +5,9 @@
 
     <Grid>
         <Button Content="← Назад" 
-    HorizontalAlignment="Left" 
-    VerticalAlignment="Top" 
-    Margin="20" 
+    Margin="20,20,680,540" 
     Style="{StaticResource PrimaryButton}" 
-    Width="100" 
-    Click="BackButton_Click"/>
+    Click="BackButton_Click" RenderTransformOrigin="-0.233,-1.476"/>
         <StackPanel>
             <TextBlock Text="Моя медицинская карта" FontSize="24" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Center" Margin="20"/>
             <TextBlock x:Name="CreatedAtTextBlock" FontSize="16" Foreground="#2C3E50" Margin="10" HorizontalAlignment="Center"/>

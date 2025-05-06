@@ -4,6 +4,7 @@
       Title="Мои записи" Loaded="Page_Loaded">
 
     <Grid Background="White">
+        <Button Content="← Назад" HorizontalAlignment="Left" Margin="40,20,0,0" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" Click="Button_Click"/>
         <TextBlock Text="Мои записи" FontSize="24" FontWeight="Bold"
                    Foreground="#2C3E50" HorizontalAlignment="Center" Margin="0,20,0,0"/>
 
@@ -66,6 +67,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Назад" HorizontalAlignment="Left" Margin="40,20,0,0" VerticalAlignment="Top" Style="{StaticResource PrimaryButton}" Click="Button_Click"/>
+        
     </Grid>
 </Page>
