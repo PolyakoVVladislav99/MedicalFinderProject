@@ -43,7 +43,7 @@
                     <GridViewColumn Header="Дата" DisplayMemberBinding="{Binding AppointmentDate, StringFormat=dd.MM.yyyy}" Width="150"/>
                     <GridViewColumn Header="Статус" DisplayMemberBinding="{Binding Status}" Width="150"/>
                     <GridViewColumn Header="Цена" DisplayMemberBinding="{Binding Price}" Width="100"/>
-                    <GridViewColumn Header=" " Width="150">
+                    <GridViewColumn Header=" " Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

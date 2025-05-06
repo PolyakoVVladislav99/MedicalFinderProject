@@ -163,5 +163,10 @@ namespace MedicalFinderProject.Views
         {
             NavigationService.GoBack();
         }
+
+        private void ViewFavoritesButton_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new FavoritesPage());
+        }
     }
 }
